@@ -16,8 +16,12 @@ const nextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   },
   
-  // Rewrites for API proxy
+  // Rewrites for API proxy (only in development)
   async rewrites() {
+    // In production, API calls go directly to the API domain
+    if (process.env.NODE_ENV === 'production') {
+      return [];
+    }
     return [
       {
         source: '/api/:path*',
