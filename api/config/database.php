@@ -17,10 +17,11 @@ class Database {
 
     public function __construct() {
         // Load from environment variables or use defaults
+        // Support both naming conventions for flexibility
         $this->host = getenv('DB_HOST') ?: 'localhost';
-        $this->db_name = getenv('DB_NAME') ?: 'yemen_cars';
-        $this->username = getenv('DB_USER') ?: 'root';
-        $this->password = getenv('DB_PASS') ?: '';
+        $this->db_name = getenv('DB_DATABASE') ?: getenv('DB_NAME') ?: 'yemen_cars';
+        $this->username = getenv('DB_USERNAME') ?: getenv('DB_USER') ?: 'root';
+        $this->password = getenv('DB_PASSWORD') ?: getenv('DB_PASS') ?: '';
     }
 
     /**

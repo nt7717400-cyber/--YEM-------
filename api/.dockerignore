@@ -1,0 +1,10 @@
+vendor
+.git
+.gitignore
+*.md
+.env.local
+logs/*
+cache/*
+.phpunit.cache
+tests
+phpunit.xml

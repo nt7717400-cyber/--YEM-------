@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Static export for Hostinger deployment (disable for local dev)
-  // output: 'export',
+  // Standalone output for Docker deployment
+  output: 'standalone',
   
   // Trailing slashes for clean URLs
   trailingSlash: true,
