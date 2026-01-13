@@ -4,13 +4,11 @@
 /// API Endpoints - نقاط نهاية الـ API
 class ApiEndpoints {
   // Base URL - يتم تعيينها من الإعدادات
-  // Use 10.0.2.2 for Android emulator (maps to host's localhost)
-  // Use localhost for web/desktop
-  // Using PHP built-in server on port 8000
-  static String baseUrl = 'http://10.0.2.2:8000';
+  // Production server
+  static String baseUrl = 'https://api.fazaacaetg.com';
   
-  // Static files URL (images, videos) - Python server on port 8001
-  static String staticUrl = 'http://10.0.2.2:8001';
+  // Static files URL (images, videos) - same as API in production
+  static String staticUrl = 'https://api.fazaacaetg.com';
 
   // Cars endpoints
   static const String cars = '/cars';
