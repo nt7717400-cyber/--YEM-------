@@ -1,0 +1,2094 @@
+{
+  "info": {
+    "name": "Yemen Car Showroom API",
+    "description": "API collection for Yemen Car Showroom platform - معرض وحدة اليمن للسيارات",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"admin\", \"password\": \"admin123\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has token', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('token');",
+                  "    pm.collectionVariables.set('authToken', jsonData.data.token);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "verify"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cars",
+      "item": [
+        {
+          "name": "Get All Cars",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/cars",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has data array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Cars with Filters",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/cars?brand=Toyota&condition=NEW&sortBy=price_asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars"],
+              "query": [
+                {"key": "brand", "value": "Toyota"},
+                {"key": "condition", "value": "NEW"},
+                {"key": "sortBy", "value": "price_asc"}
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Featured Cars",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/cars?featured=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars"],
+              "query": [
+                {"key": "featured", "value": "true"}
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('All cars are featured', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    jsonData.data.forEach(function(car) {",
+                  "        pm.expect(car.isFeatured).to.be.true;",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Car",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Test Car\", \"brand\": \"Toyota\", \"model\": \"Camry\", \"year\": 2024, \"price\": 25000, \"condition\": \"NEW\", \"description\": \"Test car description\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cars",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 201', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "pm.test('Response has car data', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.collectionVariables.set('testCarId', jsonData.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Car by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has car details', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('name');",
+                  "    pm.expect(jsonData.data).to.have.property('brand');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Car",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Updated Test Car\", \"price\": 27000}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Car was updated', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.name).to.equal('Updated Test Car');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Toggle Featured",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}/featured",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}", "featured"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Increment View Count",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}/view",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}", "view"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Duplicate Car",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}/duplicate",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}", "duplicate"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 201', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "pm.test('Response has new car ID', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.collectionVariables.set('duplicatedCarId', jsonData.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Car Status (Archive)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"status\": \"SOLD\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}", "status"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Car status is SOLD', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.status).to.equal('SOLD');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Car Status (Restore)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"status\": \"AVAILABLE\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}", "status"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Car status is AVAILABLE', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.status).to.equal('AVAILABLE');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Car",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{duplicatedCarId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{duplicatedCarId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Brands",
+      "item": [
+        {
+          "name": "Get All Brands",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/brands",
+              "host": ["{{baseUrl}}"],
+              "path": ["brands"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has brands array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "item": [
+        {
+          "name": "Get Settings",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["settings"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has settings data', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('name');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Settings",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"معرض وحدة اليمن للسيارات\", \"phone\": \"+967123456789\", \"whatsapp\": \"+967123456789\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["settings"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Stats",
+      "item": [
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["stats"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has stats data', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('totalCars');",
+                  "    pm.expect(jsonData.data).to.have.property('availableCars');",
+                  "    pm.expect(jsonData.data).to.have.property('soldCars');",
+                  "    pm.expect(jsonData.data).to.have.property('totalViews');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "item": [
+        {
+          "name": "Upload Car Images",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {"key": "images[]", "type": "file", "src": ""}
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}/images",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}", "images"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200, 201, or 400 (no file provided)', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 400]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Videos",
+      "item": [
+        {
+          "name": "Upload Video",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {"key": "video", "type": "file", "src": ""}
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}/video",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}", "video"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200, 201, or 400 (no file provided)', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 400]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Video",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{testCarId}}/video",
+              "host": ["{{baseUrl}}"],
+              "path": ["cars", "{{testCarId}}", "video"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 404 (no video exists)', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Banners",
+      "item": [
+        {
+          "name": "Get All Banners",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/banners",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has data array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Banners by Position",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/banners/position/hero_top",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners", "position", "hero_top"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has data array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "pm.test('All banners have correct position', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    jsonData.data.forEach(function(banner) {",
+                  "        pm.expect(banner.position).to.equal('hero_top');",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Existing Banner for Testing",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/banners",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has banners and set testBannerId', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "    if (jsonData.data.length > 0) {",
+                  "        pm.collectionVariables.set('testBannerId', jsonData.data[0].id);",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Banner by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/banners/{{testBannerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners", "{{testBannerId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var testBannerId = pm.collectionVariables.get('testBannerId');",
+                  "if (!testBannerId) {",
+                  "    pm.test('Skipped - no banners exist', function () { pm.expect(true).to.be.true; });",
+                  "} else {",
+                  "    pm.test('Status code is 200', function () {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "    pm.test('Response has banner details', function () {",
+                  "        var jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.data).to.have.property('id');",
+                  "        pm.expect(jsonData.data).to.have.property('title');",
+                  "        pm.expect(jsonData.data).to.have.property('position');",
+                  "        pm.expect(jsonData.data).to.have.property('imageUrl');",
+                  "        pm.expect(jsonData.data).to.have.property('isActive');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Banner",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {"key": "title", "value": "Updated Test Banner", "type": "text"},
+                {"key": "position", "value": "hero_bottom", "type": "text"}
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/banners/{{testBannerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners", "{{testBannerId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var testBannerId = pm.collectionVariables.get('testBannerId');",
+                  "if (!testBannerId) {",
+                  "    pm.test('Skipped - no banners exist', function () { pm.expect(true).to.be.true; });",
+                  "} else {",
+                  "    pm.test('Status code is 200', function () {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "    pm.test('Banner was updated', function () {",
+                  "        var jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.data.title).to.equal('Updated Test Banner');",
+                  "        pm.expect(jsonData.data.position).to.equal('hero_bottom');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Toggle Banner Active",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/banners/{{testBannerId}}/toggle",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners", "{{testBannerId}}", "toggle"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var testBannerId = pm.collectionVariables.get('testBannerId');",
+                  "if (!testBannerId) {",
+                  "    pm.test('Skipped - no banners exist', function () { pm.expect(true).to.be.true; });",
+                  "} else {",
+                  "    pm.test('Status code is 200', function () {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "    pm.test('Response has updated isActive', function () {",
+                  "        var jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.data).to.have.property('isActive');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Track Banner View",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/banners/{{testBannerId}}/view",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners", "{{testBannerId}}", "view"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var testBannerId = pm.collectionVariables.get('testBannerId');",
+                  "if (!testBannerId) {",
+                  "    pm.test('Skipped - no banners exist', function () { pm.expect(true).to.be.true; });",
+                  "} else {",
+                  "    pm.test('Status code is 200', function () {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Track Banner Click",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/banners/{{testBannerId}}/click",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners", "{{testBannerId}}", "click"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var testBannerId = pm.collectionVariables.get('testBannerId');",
+                  "if (!testBannerId) {",
+                  "    pm.test('Skipped - no banners exist', function () { pm.expect(true).to.be.true; });",
+                  "} else {",
+                  "    pm.test('Status code is 200', function () {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Banner (Non-existent)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/banners/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners", "99999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 for non-existent banner', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify Banner Still Exists",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/banners/{{testBannerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["banners", "{{testBannerId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var testBannerId = pm.collectionVariables.get('testBannerId');",
+                  "if (!testBannerId) {",
+                  "    pm.test('Skipped - no banners exist', function () { pm.expect(true).to.be.true; });",
+                  "} else {",
+                  "    pm.test('Status code is 200', function () {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "    pm.test('Banner still exists', function () {",
+                  "        var jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.data).to.have.property('id');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "VDS Part Keys",
+      "description": "نظام فحص المركبات - Part Keys Dictionary API",
+      "item": [
+        {
+          "name": "Get All Part Keys",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/part-keys",
+              "host": ["{{baseUrl}}"],
+              "path": ["part-keys"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has data array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "pm.test('Part keys have required fields', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        var partKey = jsonData.data[0];",
+                  "        pm.expect(partKey).to.have.property('partKey');",
+                  "        pm.expect(partKey).to.have.property('labelAr');",
+                  "        pm.expect(partKey).to.have.property('labelEn');",
+                  "        pm.expect(partKey).to.have.property('category');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Part Keys by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/part-keys?category=front",
+              "host": ["{{baseUrl}}"],
+              "path": ["part-keys"],
+              "query": [
+                {"key": "category", "value": "front"}
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('All part keys have front category', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    jsonData.data.forEach(function(partKey) {",
+                  "        pm.expect(partKey.category).to.equal('front');",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Part Key by Key",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/part-keys/front_bumper",
+              "host": ["{{baseUrl}}"],
+              "path": ["part-keys", "front_bumper"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has part key details', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.partKey).to.equal('front_bumper');",
+                  "    pm.expect(jsonData.data).to.have.property('labelAr');",
+                  "    pm.expect(jsonData.data).to.have.property('labelEn');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Part Key (Non-existent)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/part-keys/non_existent_key",
+              "host": ["{{baseUrl}}"],
+              "path": ["part-keys", "non_existent_key"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 for non-existent part key', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "VDS Color Mappings",
+      "description": "نظام فحص المركبات - Color Mappings API",
+      "item": [
+        {
+          "name": "Get All Color Mappings",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/color-mappings",
+              "host": ["{{baseUrl}}"],
+              "path": ["color-mappings"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has data array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "pm.test('Color mappings have required fields', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        var mapping = jsonData.data[0];",
+                  "        pm.expect(mapping).to.have.property('conditionKey');",
+                  "        pm.expect(mapping).to.have.property('colorHex');",
+                  "        pm.expect(mapping).to.have.property('labelAr');",
+                  "        pm.expect(mapping).to.have.property('labelEn');",
+                  "    }",
+                  "});",
+                  "pm.test('Color hex values are valid', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    jsonData.data.forEach(function(mapping) {",
+                  "        pm.expect(mapping.colorHex).to.match(/^#[0-9a-fA-F]{6}$/);",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Color Mapping by Condition",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/color-mappings/good",
+              "host": ["{{baseUrl}}"],
+              "path": ["color-mappings", "good"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has color mapping details', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.conditionKey).to.equal('good');",
+                  "    pm.expect(jsonData.data).to.have.property('colorHex');",
+                  "    pm.expect(jsonData.data).to.have.property('labelAr');",
+                  "    pm.expect(jsonData.data).to.have.property('labelEn');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Color Mapping (Non-existent)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/color-mappings/invalid_condition",
+              "host": ["{{baseUrl}}"],
+              "path": ["color-mappings", "invalid_condition"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 for non-existent condition', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "VDS Templates",
+      "description": "نظام فحص المركبات - Vehicle Damage System Templates API",
+      "item": [
+        {
+          "name": "Get All Templates",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/templates",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has data array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "pm.test('Set testTemplateId if templates exist', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        pm.collectionVariables.set('testTemplateId', jsonData.data[0].id);",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Templates with Filters",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/templates?active=true&type=sedan",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates"],
+              "query": [
+                {"key": "active", "value": "true"},
+                {"key": "type", "value": "sedan"}
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has data array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "pm.test('All templates match filter criteria', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    jsonData.data.forEach(function(template) {",
+                  "        pm.expect(template.isActive).to.be.true;",
+                  "        pm.expect(template.type).to.equal('sedan');",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Template by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/templates/{{testTemplateId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates", "{{testTemplateId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has template details', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.expect(jsonData.data).to.have.property('nameAr');",
+                  "    pm.expect(jsonData.data).to.have.property('nameEn');",
+                  "    pm.expect(jsonData.data).to.have.property('type');",
+                  "    pm.expect(jsonData.data).to.have.property('isActive');",
+                  "    pm.expect(jsonData.data).to.have.property('isDefault');",
+                  "});",
+                  "pm.test('Response has SVG content', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('svgFront');",
+                  "    pm.expect(jsonData.data).to.have.property('svgRear');",
+                  "    pm.expect(jsonData.data).to.have.property('svgLeftSide');",
+                  "    pm.expect(jsonData.data).to.have.property('svgRightSide');",
+                  "});",
+                  "pm.test('Response has partMappings array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('partMappings');",
+                  "    pm.expect(jsonData.data.partMappings).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nameAr\": \"قالب اختبار\", \"nameEn\": \"Test Template\", \"type\": \"suv\", \"isActive\": true, \"isDefault\": false, \"svgFront\": \"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><text x='200' y='150'>Front</text></svg>\", \"svgRear\": \"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><text x='200' y='150'>Rear</text></svg>\", \"svgLeftSide\": \"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 300'><text x='300' y='150'>Left</text></svg>\", \"svgRightSide\": \"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 300'><text x='300' y='150'>Right</text></svg>\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/templates",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has template data', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.expect(jsonData.data.nameEn).to.equal('Test Template');",
+                  "    pm.expect(jsonData.data.type).to.equal('suv');",
+                  "    pm.collectionVariables.set('createdTemplateId', jsonData.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Template - Validation Error (Missing Fields)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nameAr\": \"قالب ناقص\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/templates",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 for missing required fields', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Response has error message', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('error');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Template - Invalid Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nameAr\": \"قالب\", \"nameEn\": \"Template\", \"type\": \"invalid_type\", \"svgFront\": \"<svg></svg>\", \"svgRear\": \"<svg></svg>\", \"svgLeftSide\": \"<svg></svg>\", \"svgRightSide\": \"<svg></svg>\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/templates",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 for invalid type', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Response has error about invalid type', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('error');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Template",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nameEn\": \"Updated Test Template\", \"isActive\": false}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/templates/{{createdTemplateId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates", "{{createdTemplateId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Template was updated', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.nameEn).to.equal('Updated Test Template');",
+                  "    pm.expect(jsonData.data.isActive).to.be.false;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Template by ID (Non-existent)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/templates/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates", "99999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 for non-existent template', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Template",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/templates/{{createdTemplateId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates", "{{createdTemplateId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response confirms deletion', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('message');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Template (Non-existent)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/templates/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["templates", "99999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 for non-existent template', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auctions",
+      "description": "نظام المزايدة - Auction System API endpoints",
+      "item": [
+        {
+          "name": "Get All Auctions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auctions",
+              "host": ["{{baseUrl}}"],
+              "path": ["auctions"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has data array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "pm.test('Set testAuctionId if auctions exist', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        pm.collectionVariables.set('testAuctionId', jsonData.data[0].id);",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Active Auctions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auctions?status=ACTIVE",
+              "host": ["{{baseUrl}}"],
+              "path": ["auctions"],
+              "query": [
+                {"key": "status", "value": "ACTIVE"}
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('All auctions are active', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    jsonData.data.forEach(function(auction) {",
+                  "        pm.expect(auction.status).to.equal('ACTIVE');",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Auction by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auctions/{{testAuctionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["auctions", "{{testAuctionId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has auction details', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.expect(jsonData.data).to.have.property('startingPrice');",
+                  "    pm.expect(jsonData.data).to.have.property('currentPrice');",
+                  "    pm.expect(jsonData.data).to.have.property('endTime');",
+                  "    pm.expect(jsonData.data).to.have.property('status');",
+                  "});",
+                  "pm.test('Response has bids array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('bids');",
+                  "    pm.expect(jsonData.data.bids).to.be.an('array');",
+                  "});",
+                  "pm.test('Phone numbers are masked in bids', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    jsonData.data.bids.forEach(function(bid) {",
+                  "        if (bid.maskedPhone) {",
+                  "            pm.expect(bid.maskedPhone).to.match(/^\\d{3}\\*+\\d{3}$/);",
+                  "        }",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Place Bid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"bidderName\": \"أحمد محمد\", \"phoneNumber\": \"777123456\", \"amount\": 50000}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auctions/{{testAuctionId}}/bids",
+              "host": ["{{baseUrl}}"],
+              "path": ["auctions", "{{testAuctionId}}", "bids"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 or 201 or 400', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 400]);",
+                  "});",
+                  "pm.test('Response has expected structure', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "        pm.expect(jsonData).to.have.property('data');",
+                  "    } else {",
+                  "        pm.expect(jsonData).to.have.property('error');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Place Bid - Invalid (Empty Name)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"bidderName\": \"\", \"phoneNumber\": \"777123456\", \"amount\": 50000}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auctions/{{testAuctionId}}/bids",
+              "host": ["{{baseUrl}}"],
+              "path": ["auctions", "{{testAuctionId}}", "bids"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 for invalid bid', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Response has error message', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('error');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Place Bid - Invalid (Low Amount)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"bidderName\": \"أحمد محمد\", \"phoneNumber\": \"777123456\", \"amount\": 1}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auctions/{{testAuctionId}}/bids",
+              "host": ["{{baseUrl}}"],
+              "path": ["auctions", "{{testAuctionId}}", "bids"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 for low bid amount', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Response has error message', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('error');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Auction (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"minIncrement\": 200}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/auctions/{{testAuctionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "auctions", "{{testAuctionId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Auction was updated', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Auction by ID (Non-existent)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auctions/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["auctions", "99999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 for non-existent auction', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "VDS Inspections",
+      "description": "نظام فحص المركبات - Vehicle Damage System Inspections API",
+      "item": [
+        {
+          "name": "Get All Inspections",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vds/inspections",
+              "host": ["{{baseUrl}}"],
+              "path": ["vds", "inspections"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has data array', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "pm.test('Set testInspectionId if inspections exist', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        pm.collectionVariables.set('testInspectionId', jsonData.data[0].id);",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Inspection by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/vds/inspections/{{testInspectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["vds", "inspections", "{{testInspectionId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has inspection details', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Inspection",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"templateId\": 1, \"vehicle\": {\"make\": \"Honda\", \"model\": \"Accord\", \"year\": 2023, \"plate\": \"ا ب ج 5678\"}, \"customer\": {\"name\": \"علي أحمد\", \"phone\": \"777888999\"}, \"inspector\": {\"name\": \"فاحص اختبار\"}}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/vds/inspections",
+              "host": ["{{baseUrl}}"],
+              "path": ["vds", "inspections"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has inspection data', function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.collectionVariables.set('createdInspectionId', jsonData.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Inspection",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"vehicle\": {\"mileage\": 50000}, \"generalNotes\": \"ملاحظات اختبار\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/vds/inspections/{{createdInspectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["vds", "inspections", "{{createdInspectionId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Finalize Inspection",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{authToken}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vds/inspections/{{createdInspectionId}}/finalize",
+              "host": ["{{baseUrl}}"],
+              "path": ["vds", "inspections", "{{createdInspectionId}}", "finalize"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Inspection by ID (Non-existent)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/vds/inspections/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["vds", "inspections", "99999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 for non-existent inspection', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

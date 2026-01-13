@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sedan Front View - VDS Template -->
+  <!-- Part IDs match Part_Keys from database -->
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="400" height="300" fill="#f8fafc"/>
+  
+  <!-- Front Bumper - الصدام الأمامي -->
+  <path id="front_bumper" 
+        d="M 60,220 L 340,220 L 350,260 L 50,260 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الصدام الأمامي" data-label-en="Front Bumper"/>
+  
+  <!-- Hood - الكبوت -->
+  <path id="hood" 
+        d="M 80,120 L 320,120 L 340,220 L 60,220 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الكبوت" data-label-en="Hood"/>
+  
+  <!-- Front Grille - الشبك الأمامي -->
+  <path id="front_grille" 
+        d="M 140,230 L 260,230 L 265,255 L 135,255 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الشبك الأمامي" data-label-en="Front Grille"/>
+  
+  <!-- Headlight Left - المصباح الأمامي الأيسر -->
+  <path id="headlight_left" 
+        d="M 70,180 L 130,175 L 135,220 L 65,220 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المصباح الأمامي الأيسر" data-label-en="Left Headlight"/>
+  
+  <!-- Headlight Right - المصباح الأمامي الأيمن -->
+  <path id="headlight_right" 
+        d="M 270,175 L 330,180 L 335,220 L 265,220 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المصباح الأمامي الأيمن" data-label-en="Right Headlight"/>
+  
+  <!-- Front Windshield - الزجاج الأمامي -->
+  <path id="front_windshield" 
+        d="M 100,50 L 300,50 L 320,120 L 80,120 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الزجاج الأمامي" data-label-en="Front Windshield"/>
+  
+  <!-- Left Front Fender (visible from front) - الرفرف الأمامي الأيسر -->
+  <path id="left_front_fender" 
+        d="M 50,140 L 80,120 L 60,220 L 50,220 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الرفرف الأمامي الأيسر" data-label-en="Left Front Fender"/>
+  
+  <!-- Right Front Fender (visible from front) - الرفرف الأمامي الأيمن -->
+  <path id="right_front_fender" 
+        d="M 320,120 L 350,140 L 350,220 L 340,220 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الرفرف الأمامي الأيمن" data-label-en="Right Front Fender"/>
+  
+  <!-- Left Mirror (visible from front) - المرآة اليسرى -->
+  <path id="left_mirror" 
+        d="M 45,90 L 60,85 L 65,105 L 50,110 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المرآة اليسرى" data-label-en="Left Mirror"/>
+  
+  <!-- Right Mirror (visible from front) - المرآة اليمنى -->
+  <path id="right_mirror" 
+        d="M 340,85 L 355,90 L 350,110 L 335,105 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المرآة اليمنى" data-label-en="Right Mirror"/>
+  
+  <!-- Roof (top edge visible from front) - السقف -->
+  <path id="roof" 
+        d="M 110,30 L 290,30 L 300,50 L 100,50 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="السقف" data-label-en="Roof"/>
+  
+  <!-- Front Left Wheel - العجلة الأمامية اليسرى -->
+  <ellipse id="wheel_front_left" 
+           cx="90" cy="270" rx="35" ry="20" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الأمامية اليسرى" data-label-en="Front Left Wheel"/>
+  
+  <!-- Front Right Wheel - العجلة الأمامية اليمنى -->
+  <ellipse id="wheel_front_right" 
+           cx="310" cy="270" rx="35" ry="20" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الأمامية اليمنى" data-label-en="Front Right Wheel"/>
+  
+  <!-- Style definitions -->
+  <style>
+    .body-part { 
+      cursor: pointer; 
+      transition: all 0.2s ease;
+    }
+    .body-part:hover { 
+      stroke: #1f2937; 
+      stroke-width: 2.5; 
+      filter: brightness(1.1);
+    }
+  </style>
+</svg>

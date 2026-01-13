@@ -1,0 +1,21 @@
+{
+    "name": "yemen-cars/api",
+    "description": "Yemen Car Showroom API",
+    "type": "project",
+    "require": {
+        "php": ">=8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "YemenCars\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "YemenCars\\Tests\\": "tests/"
+        }
+    }
+}

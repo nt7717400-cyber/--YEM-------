@@ -1,0 +1,159 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { AdminLayout } from '@/components/admin';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { api } from '@/lib/api';
+import type { VDSPartKey } from '@/types/vds';
+
+type PartCategory = 'front' | 'rear' | 'left' | 'right' | 'top' | 'wheels';
+
+const CATEGORY_LABELS: Record<PartCategory, { ar: string; en: string }> = {
+  front: { ar: 'الأمام', en: 'Front' },
+  rear: { ar: 'الخلف', en: 'Rear' },
+  left: { ar: 'الجانب الأيسر', en: 'Left Side' },
+  right: { ar: 'الجانب الأيمن', en: 'Right Side' },
+  top: { ar: 'الأعلى', en: 'Top' },
+  wheels: { ar: 'العجلات', en: 'Wheels' },
+};
+
+const ALL_CATEGORIES: PartCategory[] = ['front', 'rear', 'left', 'right', 'top', 'wheels'];
+
+export default function PartKeysPage() {
+  const [partKeys, setPartKeys] = useState<VDSPartKey[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState<PartCategory | ''>('');
+
+  useEffect(() => {
+    loadPartKeys();
+  }, []);
+
+  const loadPartKeys = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+      const data = await api.getAllPartKeys() as VDSPartKey[];
+      setPartKeys(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error loading data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const filteredPartKeys = partKeys.filter((pk) => {
+    if (categoryFilter && pk.category !== categoryFilter) return false;
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      return (
+        pk.partKey.toLowerCase().includes(query) ||
+        pk.labelAr.includes(searchQuery) ||
+        pk.labelEn.toLowerCase().includes(query)
+      );
+    }
+    return true;
+  });
+
+  const groupedPartKeys = filteredPartKeys.reduce((acc, pk) => {
+    if (!acc[pk.category]) acc[pk.category] = [];
+    acc[pk.category].push(pk);
+    return acc;
+  }, {} as Record<string, VDSPartKey[]>);
+
+  return (
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">Part Keys Management</h1>
+          <p className="text-gray-500 mt-1">Unified parts dictionary</p>
+        </div>
+
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <Input
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value as PartCategory | '')}
+                className="h-10 px-3 border rounded-md bg-white"
+              >
+                <option value="">All Categories</option>
+                {ALL_CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat}>{CATEGORY_LABELS[cat].en}</option>
+                ))}
+              </select>
+            </div>
+          </CardContent>
+        </Card>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+            {error}
+            <Button variant="link" onClick={loadPartKeys}>Retry</Button>
+          </div>
+        )}
+
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+        ) : filteredPartKeys.length === 0 ? (
+          <Card>
+            <CardContent className="py-12 text-center text-gray-500">
+              {searchQuery || categoryFilter ? 'No results found' : 'No parts registered'}
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-6">
+            {ALL_CATEGORIES.filter((cat) => groupedPartKeys[cat] && groupedPartKeys[cat].length > 0).map((category) => (
+              <Card key={category}>
+                <CardHeader className="bg-gray-50 border-b">
+                  <CardTitle className="flex items-center gap-2">
+                    <span>{CATEGORY_LABELS[category].ar}</span>
+                    <span className="text-sm text-gray-500">({CATEGORY_LABELS[category].en})</span>
+                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-auto">
+                      {groupedPartKeys[category].length}
+                    </span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="divide-y">
+                    {groupedPartKeys[category].sort((a, b) => a.sortOrder - b.sortOrder).map((pk) => (
+                      <div key={pk.partKey} className={'p-4 hover:bg-gray-50 ' + (pk.isActive ? '' : 'opacity-50')}>
+                        <div className="flex items-center gap-3">
+                          <code className="bg-gray-100 px-2 py-1 rounded text-sm">{pk.partKey}</code>
+                          {!pk.isActive && <span className="bg-gray-200 text-xs px-2 py-1 rounded">Inactive</span>}
+                        </div>
+                        <div className="mt-1 text-sm">
+                          <span className="font-medium">{pk.labelAr}</span>
+                          <span className="text-gray-400 mx-2">|</span>
+                          <span className="text-gray-600">{pk.labelEn}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {!isLoading && partKeys.length > 0 && (
+          <div className="text-sm text-gray-500 text-center">
+            Total: {partKeys.length} | Active: {partKeys.filter((pk) => pk.isActive).length}
+          </div>
+        )}
+      </div>
+    </AdminLayout>
+  );
+}

@@ -1,0 +1,62 @@
+/// Retryable Image Widget for Flutter Customer App
+/// Handles image loading with automatic retry on failure
+library;
+
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:customer_app/core/constants/app_colors.dart';
+
+/// Retryable Image Widget with automatic retry on failure
+class RetryableImage extends StatelessWidget {
+  final String imageUrl;
+  final BoxFit fit;
+  final int maxRetries;
+  final Widget? placeholder;
+  final Widget? errorWidget;
+
+  const RetryableImage({
+    super.key,
+    required this.imageUrl,
+    this.fit = BoxFit.cover,
+    this.maxRetries = 3,
+    this.placeholder,
+    this.errorWidget,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      fit: fit,
+      memCacheWidth: 800,
+      memCacheHeight: 800,
+      placeholder: (context, url) => placeholder ?? _buildDefaultPlaceholder(isDark),
+      errorWidget: (context, url, error) {
+        debugPrint('Image error for $imageUrl: $error');
+        return errorWidget ?? _buildDefaultError(isDark);
+      },
+    );
+  }
+
+  Widget _buildDefaultPlaceholder(bool isDark) {
+    return Container(
+      color: isDark ? AppColors.shimmerBaseDark : AppColors.shimmerBase,
+      child: const Center(
+        child: CircularProgressIndicator(strokeWidth: 2),
+      ),
+    );
+  }
+
+  Widget _buildDefaultError(bool isDark) {
+    return Container(
+      color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
+      child: Icon(
+        Icons.broken_image,
+        size: 48,
+        color: isDark ? AppColors.textHintDark : AppColors.textHintLight,
+      ),
+    );
+  }
+}

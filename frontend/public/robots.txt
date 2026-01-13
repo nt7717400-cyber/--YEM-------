@@ -1,0 +1,9 @@
+# Robots.txt for معرض وحدة اليمن للسيارات
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://example.com/sitemap.xml

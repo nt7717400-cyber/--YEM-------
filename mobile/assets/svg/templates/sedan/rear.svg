@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sedan Rear View - VDS Template -->
+  <rect x="0" y="0" width="400" height="300" fill="#f8fafc"/>
+  
+  <path id="rear_bumper" d="M 60,220 L 340,220 L 350,260 L 50,260 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="trunk" d="M 80,120 L 320,120 L 340,220 L 60,220 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="taillight_left" d="M 65,150 L 100,145 L 105,200 L 65,200 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="taillight_right" d="M 300,145 L 335,150 L 335,200 L 295,200 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="rear_windshield" d="M 100,50 L 300,50 L 320,120 L 80,120 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="left_rear_quarter" d="M 50,140 L 80,120 L 60,220 L 50,220 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="right_rear_quarter" d="M 320,120 L 350,140 L 350,220 L 340,220 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="roof" d="M 110,30 L 290,30 L 300,50 L 100,50 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <ellipse id="wheel_rear_left" cx="90" cy="270" rx="35" ry="20" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <ellipse id="wheel_rear_right" cx="310" cy="270" rx="35" ry="20" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+</svg>

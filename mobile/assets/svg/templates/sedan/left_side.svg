@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sedan Left Side View - VDS Template -->
+  <rect x="0" y="0" width="500" height="250" fill="#f8fafc"/>
+  
+  <path id="front_bumper" d="M 20,140 L 50,130 L 55,180 L 20,185 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="hood" d="M 50,90 L 130,70 L 130,130 L 50,130 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="front_windshield" d="M 130,70 L 180,40 L 180,90 L 130,90 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="roof" d="M 180,35 L 340,35 L 340,50 L 180,40 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="left_front_fender" d="M 50,130 L 130,130 L 130,180 L 55,180 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="left_front_door" d="M 130,90 L 230,90 L 230,180 L 130,180 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="left_front_window" d="M 135,50 L 180,40 L 180,85 L 135,85 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="left_rear_door" d="M 230,90 L 330,90 L 330,180 L 230,180 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="left_rear_window" d="M 235,50 L 335,50 L 335,85 L 235,85 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="left_rear_quarter" d="M 330,90 L 400,100 L 400,180 L 330,180 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="rear_windshield" d="M 340,50 L 390,70 L 400,100 L 340,90 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="trunk" d="M 400,100 L 450,110 L 450,140 L 400,140 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="rear_bumper" d="M 450,140 L 480,145 L 480,185 L 445,180 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="left_mirror" d="M 125,75 L 145,70 L 145,90 L 125,95 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="headlight_left" d="M 30,120 L 55,115 L 55,135 L 30,140 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <path id="taillight_left" d="M 455,115 L 475,120 L 475,145 L 455,140 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <ellipse id="wheel_front_left" cx="100" cy="200" rx="40" ry="35" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+  <ellipse id="wheel_rear_left" cx="380" cy="200" rx="40" ry="35" fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"/>
+</svg>

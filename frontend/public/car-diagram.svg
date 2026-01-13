@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Car Inspection Diagram - Top-down view -->
+  <!-- Used as fallback when 3D viewer is unavailable -->
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="300" height="400" fill="#f3f4f6"/>
+  
+  <!-- Car outline shadow -->
+  <path d="M 45,15 L 255,15 L 260,385 L 40,385 Z" fill="#e5e7eb" stroke="none"/>
+  
+  <!-- Body Parts (default gray - needs_check status) -->
+  
+  <!-- Front Bumper - الصدام الأمامي -->
+  <path id="front_bumper" d="M 80,20 L 220,20 L 230,40 L 70,40 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Hood - الكبوت -->
+  <path id="hood" d="M 75,45 L 225,45 L 220,120 L 80,120 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Front Left Fender - الرفرف الأمامي الأيسر -->
+  <path id="front_left_fender" d="M 50,45 L 70,45 L 75,120 L 50,120 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Front Right Fender - الرفرف الأمامي الأيمن -->
+  <path id="front_right_fender" d="M 230,45 L 250,45 L 250,120 L 225,120 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Front Left Door - الباب الأمامي الأيسر -->
+  <path id="front_left_door" d="M 50,125 L 75,125 L 75,200 L 50,200 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Front Right Door - الباب الأمامي الأيمن -->
+  <path id="front_right_door" d="M 225,125 L 250,125 L 250,200 L 225,200 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Roof - السقف -->
+  <path id="roof" d="M 80,125 L 220,125 L 220,250 L 80,250 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Rear Left Door - الباب الخلفي الأيسر -->
+  <path id="rear_left_door" d="M 50,205 L 75,205 L 75,280 L 50,280 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Rear Right Door - الباب الخلفي الأيمن -->
+  <path id="rear_right_door" d="M 225,205 L 250,205 L 250,280 L 225,280 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Rear Left Quarter - الربع الخلفي الأيسر -->
+  <path id="rear_left_quarter" d="M 50,285 L 75,285 L 80,360 L 50,360 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Rear Right Quarter - الربع الخلفي الأيمن -->
+  <path id="rear_right_quarter" d="M 225,285 L 250,285 L 250,360 L 220,360 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Trunk - الشنطة -->
+  <path id="trunk" d="M 85,255 L 215,255 L 215,355 L 85,355 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Rear Bumper - الصدام الخلفي -->
+  <path id="rear_bumper" d="M 70,360 L 230,360 L 220,380 L 80,380 Z" 
+        fill="#6b7280" stroke="#666" stroke-width="1" class="body-part"/>
+  
+  <!-- Wheels (decorative) -->
+  <ellipse cx="65" cy="90" rx="12" ry="25" fill="#333"/>
+  <ellipse cx="235" cy="90" rx="12" ry="25" fill="#333"/>
+  <ellipse cx="65" cy="310" rx="12" ry="25" fill="#333"/>
+  <ellipse cx="235" cy="310" rx="12" ry="25" fill="#333"/>
+  
+  <!-- Windshield indicators -->
+  <path d="M 90,125 L 210,125 L 200,140 L 100,140 Z" 
+        fill="rgba(100,150,200,0.3)" stroke="#666" stroke-width="0.5"/>
+  <path d="M 95,250 L 205,250 L 210,265 L 90,265 Z" 
+        fill="rgba(100,150,200,0.3)" stroke="#666" stroke-width="0.5"/>
+  
+  <!-- Style definitions for interactive use -->
+  <style>
+    .body-part { cursor: pointer; transition: all 0.2s ease; }
+    .body-part:hover { stroke: #000; stroke-width: 2; opacity: 1; }
+    
+    /* Status colors - apply via JavaScript or CSS classes */
+    .status-original { fill: #22c55e; }    /* سليم / وكالة - أخضر */
+    .status-painted { fill: #eab308; }     /* رش - أصفر */
+    .status-bodywork { fill: #f97316; }    /* سمكرة + رش - برتقالي */
+    .status-accident { fill: #ef4444; }    /* حادث - أحمر */
+    .status-replaced { fill: #3b82f6; }    /* تم تغيير القطعة - أزرق */
+    .status-needs_check { fill: #6b7280; } /* يحتاج فحص - رمادي */
+  </style>
+</svg>

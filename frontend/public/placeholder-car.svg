@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f3f4f6"/>
+  <g fill="#9ca3af">
+    <path d="M200 100c-30 0-55 15-70 35l-10 15h160l-10-15c-15-20-40-35-70-35z"/>
+    <rect x="110" y="150" width="180" height="60" rx="10"/>
+    <circle cx="140" cy="210" r="25"/>
+    <circle cx="260" cy="210" r="25"/>
+    <circle cx="140" cy="210" r="12" fill="#f3f4f6"/>
+    <circle cx="260" cy="210" r="12" fill="#f3f4f6"/>
+  </g>
+  <text x="200" y="260" text-anchor="middle" fill="#9ca3af" font-family="Arial" font-size="14">لا توجد صورة</text>
+</svg>
