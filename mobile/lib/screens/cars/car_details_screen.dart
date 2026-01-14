@@ -44,13 +44,33 @@ class CarDetailsScreen extends ConsumerStatefulWidget {
 
 class _CarDetailsScreenState extends ConsumerState<CarDetailsScreen> {
   bool _viewCountIncremented = false;
+  int _currentImageIndex = 0;
+  PageController? _imagePageController;
 
   @override
   void initState() {
     super.initState();
+    _imagePageController = PageController();
     // Increment view count when screen opens
     // Requirements: 3.6
     _incrementViewCount();
+  }
+
+  @override
+  void dispose() {
+    _imagePageController?.dispose();
+    super.dispose();
+  }
+
+  void _goToImage(int index) {
+    _imagePageController?.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+    setState(() {
+      _currentImageIndex = index;
+    });
   }
 
   Future<void> _incrementViewCount() async {
@@ -158,6 +178,9 @@ $productUrl
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Thumbnail strip for image navigation
+              if (car.images.length > 1)
+                _buildThumbnailStrip(car, isDark),
               // Car info header
               _buildCarHeader(car, isDark),
               // Auction section (if car is auction type)
@@ -194,6 +217,11 @@ $productUrl
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final totalHeight = 350 + statusBarHeight;
     
+    final imageUrls = car.images.map((img) => ApiEndpoints.getFullUrl(img.url)).toList();
+    if (imageUrls.isEmpty && car.thumbnail != null) {
+      imageUrls.add(ApiEndpoints.getFullUrl(car.thumbnail));
+    }
+    
     return SliverAppBar(
       expandedHeight: totalHeight,
       pinned: true,
@@ -212,14 +240,177 @@ $productUrl
         collapseMode: CollapseMode.pin,
         background: Padding(
           padding: EdgeInsets.only(top: statusBarHeight + kToolbarHeight),
-          child: ImageGallery(
-            images: car.images,
-            thumbnailUrl: car.thumbnail,
-            height: 350,
-            showIndicator: true,
-            enableZoom: true,
+          child: _buildMainImageGallery(car, imageUrls, isDark),
+        ),
+      ),
+    );
+  }
+
+  /// Build main image gallery with PageView
+  Widget _buildMainImageGallery(Car car, List<String> imageUrls, bool isDark) {
+    if (imageUrls.isEmpty) {
+      return Container(
+        height: 350,
+        color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
+        child: Center(
+          child: Icon(
+            Icons.image_not_supported,
+            size: 64,
+            color: isDark ? AppColors.textHintDark : AppColors.textHintLight,
           ),
         ),
+      );
+    }
+
+    return SizedBox(
+      height: 350,
+      child: Stack(
+        children: [
+          // Image PageView
+          PageView.builder(
+            controller: _imagePageController,
+            itemCount: imageUrls.length,
+            onPageChanged: (index) {
+              setState(() {
+                _currentImageIndex = index;
+              });
+            },
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () => _openFullscreen(imageUrls, index),
+                child: Container(
+                  color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
+                  child: Image.network(
+                    imageUrls[index],
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      Icons.broken_image,
+                      size: 64,
+                      color: isDark ? AppColors.textHintDark : AppColors.textHintLight,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          // Image count badge
+          if (imageUrls.length > 1)
+            Positioned(
+              top: 12,
+              left: 12,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.6),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.photo_library, size: 14, color: Colors.white),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${_currentImageIndex + 1}/${imageUrls.length}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          // Zoom hint
+          Positioned(
+            bottom: 12,
+            right: 12,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.6),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.zoom_in, size: 14, color: Colors.white),
+                  SizedBox(width: 4),
+                  Text('اضغط للتكبير', style: TextStyle(color: Colors.white, fontSize: 11)),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Open fullscreen gallery
+  void _openFullscreen(List<String> imageUrls, int initialIndex) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FullscreenGallery(
+          imageUrls: imageUrls,
+          initialIndex: initialIndex,
+        ),
+      ),
+    );
+  }
+
+  /// Build thumbnail strip for image navigation
+  Widget _buildThumbnailStrip(Car car, bool isDark) {
+    final imageUrls = car.images.map((img) => ApiEndpoints.getFullUrl(img.url)).toList();
+    
+    return Container(
+      height: 70,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      color: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        itemCount: imageUrls.length,
+        itemBuilder: (context, index) {
+          final isSelected = index == _currentImageIndex;
+          return GestureDetector(
+            onTap: () => _goToImage(index),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              width: 54,
+              height: 54,
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: isSelected ? AppColors.primary : (isDark ? AppColors.borderDark : AppColors.borderLight),
+                  width: isSelected ? 2.5 : 1,
+                ),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: isSelected ? [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.4),
+                    blurRadius: 6,
+                    spreadRadius: 1,
+                  ),
+                ] : null,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Image.network(
+                  imageUrls[index],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
+                    child: Icon(
+                      Icons.broken_image,
+                      size: 20,
+                      color: isDark ? AppColors.textHintDark : AppColors.textHintLight,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
