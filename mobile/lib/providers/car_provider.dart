@@ -14,12 +14,10 @@ import '../repositories/car_repository.dart';
 
 /// API Client Provider - مزود عميل الـ API
 final apiClientProvider = Provider<ApiClient>((ref) {
-  // Base URL should be configured from environment
-  // For Android emulator, use 10.0.2.2 to access host's localhost
-  // Using PHP built-in server on port 8000
+  // Production server URL
   const baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://10.0.2.2:8000',
+    defaultValue: 'https://api.fazaacaetg.com',
   );
   return ApiClient(baseUrl: baseUrl);
 });
