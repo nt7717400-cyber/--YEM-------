@@ -79,15 +79,18 @@ class CarCard extends StatelessWidget {
 
     final fullUrl = ApiEndpoints.getFullUrl(imageUrl);
 
-    return RetryableImage(
-      imageUrl: fullUrl,
-      fit: BoxFit.cover,
-      errorWidget: Container(
-        color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
-        child: Icon(
-          Icons.directions_car,
-          size: 48,
-          color: isDark ? AppColors.textHintDark : AppColors.textHintLight,
+    return Container(
+      color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
+      child: RetryableImage(
+        imageUrl: fullUrl,
+        fit: BoxFit.contain,
+        errorWidget: Container(
+          color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
+          child: Icon(
+            Icons.directions_car,
+            size: 48,
+            color: isDark ? AppColors.textHintDark : AppColors.textHintLight,
+          ),
         ),
       ),
     );

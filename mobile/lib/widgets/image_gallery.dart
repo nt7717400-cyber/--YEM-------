@@ -212,15 +212,18 @@ class _ImageGalleryState extends State<ImageGallery> {
   }
 
   Widget _buildImage(String url, bool isDark) {
-    return RetryableImage(
-      imageUrl: url,
-      fit: BoxFit.cover,
-      errorWidget: Container(
-        color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
-        child: Icon(
-          Icons.broken_image,
-          size: 64,
-          color: isDark ? AppColors.textHintDark : AppColors.textHintLight,
+    return Container(
+      color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
+      child: RetryableImage(
+        imageUrl: url,
+        fit: BoxFit.contain,
+        errorWidget: Container(
+          color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
+          child: Icon(
+            Icons.broken_image,
+            size: 64,
+            color: isDark ? AppColors.textHintDark : AppColors.textHintLight,
+          ),
         ),
       ),
     );
