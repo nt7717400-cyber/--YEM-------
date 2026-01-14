@@ -338,12 +338,17 @@ class AuctionsController {
             // Allowed fields for update - support both camelCase and snake_case
             $endTime = $data['endTime'] ?? $data['end_time'] ?? null;
             if ($endTime !== null) {
+                // Convert ISO datetime to MySQL format
+                $timestamp = strtotime($endTime);
+                if ($timestamp === false) {
+                    Response::error('صيغة وقت الانتهاء غير صحيحة', 400, 'VAL_001');
+                }
                 // Validate end time is in future
-                if (strtotime($endTime) <= time()) {
+                if ($timestamp <= time()) {
                     Response::error('وقت الانتهاء يجب أن يكون في المستقبل', 400, 'VAL_001');
                 }
                 $updates[] = "end_time = ?";
-                $params[] = $endTime;
+                $params[] = date('Y-m-d H:i:s', $timestamp);
             }
 
             $status = $data['status'] ?? null;
