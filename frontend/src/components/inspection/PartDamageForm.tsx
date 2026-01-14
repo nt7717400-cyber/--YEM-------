@@ -196,23 +196,25 @@ export function PartDamageForm({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-background rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4">
+      <div className="bg-background rounded-t-2xl sm:rounded-lg shadow-xl w-full sm:max-w-md max-h-[85vh] sm:max-h-[90vh] overflow-y-auto">
+        {/* Header - Mobile optimized with drag handle */}
         <div className="sticky top-0 bg-background border-b px-4 py-3 flex items-center justify-between">
-          <div>
-            <h3 className="font-semibold text-lg">{isTire ? labels.tireTitle : labels.title}</h3>
-            <p className="text-sm text-muted-foreground">
+          {/* Mobile drag handle */}
+          <div className="absolute top-2 left-1/2 -translate-x-1/2 w-10 h-1 bg-gray-300 rounded-full sm:hidden" />
+          <div className="pt-2 sm:pt-0">
+            <h3 className="font-semibold text-base sm:text-lg">{isTire ? labels.tireTitle : labels.title}</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">
               {partLabel[language]}
             </p>
           </div>
           <button
             type="button"
             onClick={onCancel}
-            className="text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground p-2 -m-2"
             aria-label={labels.cancel}
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -398,25 +400,27 @@ export function PartDamageForm({
           </div>
         </div>
 
-        {/* Footer Actions */}
-        <div className="sticky bottom-0 bg-background border-t px-4 py-3 flex gap-2">
+        {/* Footer Actions - Mobile optimized */}
+        <div className="sticky bottom-0 bg-background border-t px-4 py-3 flex flex-col-reverse sm:flex-row gap-2 safe-area-inset-bottom">
+          <div className="flex gap-2 w-full sm:w-auto">
+            <Button type="button" variant="outline" onClick={onCancel} className="flex-1 sm:flex-none">
+              {labels.cancel}
+            </Button>
+            <Button type="button" onClick={handleSave} className="flex-1 sm:flex-none">
+              {labels.save}
+            </Button>
+          </div>
           {onDelete && currentData && (
             <Button
               type="button"
               variant="destructive"
               size="sm"
               onClick={onDelete}
-              className="mr-auto"
+              className="w-full sm:w-auto sm:mr-auto"
             >
               {labels.delete}
             </Button>
           )}
-          <Button type="button" variant="outline" onClick={onCancel}>
-            {labels.cancel}
-          </Button>
-          <Button type="button" onClick={handleSave}>
-            {labels.save}
-          </Button>
         </div>
       </div>
     </div>

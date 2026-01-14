@@ -24,15 +24,15 @@ export function ColorLegend({
 
   if (compact) {
     return (
-      <div className={cn('flex flex-wrap gap-2', className)}>
+      <div className={cn('flex flex-wrap gap-x-3 gap-y-1.5 sm:gap-2', className)}>
         {colorMappings.map((mapping) => (
           <div
             key={mapping.condition}
-            className="flex items-center gap-1.5 text-xs"
+            className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs"
             title={language === 'ar' ? mapping.labelAr : mapping.labelEn}
           >
             <span
-              className="w-3 h-3 rounded-full flex-shrink-0"
+              className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex-shrink-0"
               style={{ backgroundColor: mapping.colorHex }}
             />
             <span className="text-muted-foreground">
@@ -45,19 +45,19 @@ export function ColorLegend({
   }
 
   return (
-    <div className={cn('bg-background border rounded-lg p-3', className)}>
-      <h4 className="text-sm font-medium mb-2">{title}</h4>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+    <div className={cn('bg-background border rounded-lg p-2 sm:p-3', className)}>
+      <h4 className="text-xs sm:text-sm font-medium mb-2">{title}</h4>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 sm:gap-2">
         {colorMappings.map((mapping) => (
           <div
             key={mapping.condition}
-            className="flex items-center gap-2"
+            className="flex items-center gap-1.5 sm:gap-2"
           >
             <span
-              className="w-4 h-4 rounded-full flex-shrink-0 border border-gray-200"
+              className="w-3 h-3 sm:w-4 sm:h-4 rounded-full flex-shrink-0 border border-gray-200"
               style={{ backgroundColor: mapping.colorHex }}
             />
-            <span className="text-sm text-foreground">
+            <span className="text-xs sm:text-sm text-foreground truncate">
               {language === 'ar' ? mapping.labelAr : mapping.labelEn}
             </span>
           </div>

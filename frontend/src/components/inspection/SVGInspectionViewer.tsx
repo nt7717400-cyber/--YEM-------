@@ -78,9 +78,22 @@ export function SVGInspectionViewer({
     return processed;
   }, [svgContent, partsStatus]);
 
-  // Handle click on SVG container
-  const handleSvgClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+  // Handle click on SVG container (works for both mouse and touch)
+  const handleSvgClick = React.useCallback((e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     if (readOnly) return;
+    
+    // Get the target element
+    let clientX: number, clientY: number;
+    if ('touches' in e) {
+      // Touch event
+      if (e.touches.length === 0) return;
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      // Mouse event
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
     
     const target = e.target as Element;
     let element: Element | null = target;
@@ -176,19 +189,20 @@ export function SVGInspectionViewer({
 
   return (
     <div className={cn('relative', className)}>
-      {/* SVG Container with event delegation */}
+      {/* SVG Container with event delegation - touch optimized */}
       <div
-        className="w-full h-full svg-inspection-viewer"
+        className="w-full h-full svg-inspection-viewer touch-manipulation"
         onClick={handleSvgClick}
+        onTouchEnd={handleSvgClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         style={{ cursor: readOnly ? 'default' : 'pointer' }}
         dangerouslySetInnerHTML={{ __html: processedSvg || '' }}
       />
 
-      {/* Tooltip for hovered part */}
+      {/* Tooltip for hovered part - hidden on touch devices */}
       {hoveredPart && (
-        <div className="absolute top-2 left-2 bg-black/80 text-white px-3 py-1.5 rounded-md text-sm pointer-events-none z-10">
+        <div className="absolute top-2 left-2 bg-black/80 text-white px-3 py-1.5 rounded-md text-sm pointer-events-none z-10 hidden sm:block">
           {getPartLabel(hoveredPart, language)}
         </div>
       )}
@@ -198,16 +212,24 @@ export function SVGInspectionViewer({
         .svg-inspection-viewer svg {
           width: 100%;
           height: 100%;
-          max-height: 400px;
+          max-height: 100%;
         }
         .svg-inspection-viewer .body-part {
           transition: all 0.2s ease;
           cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
         }
         .svg-inspection-viewer .body-part:hover {
           stroke: #1f2937;
           stroke-width: 2.5;
           filter: brightness(1.1);
+        }
+        @media (hover: none) {
+          .svg-inspection-viewer .body-part:active {
+            stroke: #1f2937;
+            stroke-width: 3;
+            filter: brightness(1.15);
+          }
         }
       `}</style>
     </div>

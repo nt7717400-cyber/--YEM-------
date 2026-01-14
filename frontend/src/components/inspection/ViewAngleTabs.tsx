@@ -65,7 +65,11 @@ export function ViewAngleTabs({
   className,
 }: ViewAngleTabsProps) {
   return (
-    <div className={cn('flex flex-wrap gap-2', className)}>
+    <div className={cn(
+      'flex gap-1 sm:gap-2 overflow-x-auto pb-2 -mx-2 px-2 sm:mx-0 sm:px-0 sm:flex-wrap',
+      'scrollbar-hide',
+      className
+    )}>
       {availableAngles.map((angle) => {
         const isActive = currentAngle === angle;
         const label = VIEW_ANGLE_LABELS[angle]?.[language] || angle;
@@ -76,8 +80,9 @@ export function ViewAngleTabs({
             type="button"
             onClick={() => onAngleChange(angle)}
             className={cn(
-              'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all',
+              'flex items-center gap-1 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all',
               'border focus:outline-none focus:ring-2 focus:ring-primary/50',
+              'whitespace-nowrap flex-shrink-0',
               isActive
                 ? 'bg-primary text-primary-foreground border-primary shadow-sm'
                 : 'bg-background text-foreground border-input hover:bg-accent hover:text-accent-foreground'
@@ -85,8 +90,8 @@ export function ViewAngleTabs({
             aria-pressed={isActive}
             aria-label={label}
           >
-            {ViewAngleIcons[angle]}
-            <span>{label}</span>
+            <span className="w-4 h-4 sm:w-5 sm:h-5">{ViewAngleIcons[angle]}</span>
+            <span className="hidden xs:inline sm:inline">{label}</span>
           </button>
         );
       })}

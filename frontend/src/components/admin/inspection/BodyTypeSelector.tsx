@@ -32,8 +32,8 @@ export function BodyTypeSelector({
   disabled = false,
 }: BodyTypeSelectorProps) {
   return (
-    <div className="w-full" dir="rtl">
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+    <div className="w-full max-w-sm" dir="rtl">
+      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
         نوع الهيكل
       </label>
       <Select
@@ -42,7 +42,7 @@ export function BodyTypeSelector({
         disabled={disabled}
         dir="rtl"
       >
-        <SelectTrigger className="w-full text-right" data-testid="body-type-trigger">
+        <SelectTrigger className="w-full text-right text-sm" data-testid="body-type-trigger">
           <SelectValue placeholder="اختر نوع الهيكل" />
         </SelectTrigger>
         <SelectContent className="text-right" dir="rtl">

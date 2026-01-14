@@ -549,17 +549,17 @@ export function InspectionSection({
 
       {/* SVG Inspection Viewer */}
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
+        <CardHeader className="pb-2 sm:pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div>
-              <CardTitle>{t('exteriorInspection')}</CardTitle>
-              <p className="text-sm text-gray-500 mt-1">
+              <CardTitle className="text-base sm:text-lg">{t('exteriorInspection')}</CardTitle>
+              <p className="text-xs sm:text-sm text-gray-500 mt-1">
                 {t('clickPartToInspect')}
               </p>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 sm:space-y-4 px-3 sm:px-6">
           {/* View Angle Tabs */}
           <ViewAngleTabs
             currentAngle={currentAngle}
@@ -568,8 +568,8 @@ export function InspectionSection({
             language={language}
           />
 
-          {/* SVG Viewer */}
-          <div className="w-full h-[400px] bg-gradient-to-b from-gray-100 to-gray-200 rounded-lg overflow-hidden border border-gray-300">
+          {/* SVG Viewer - Responsive height */}
+          <div className="w-full h-[280px] sm:h-[350px] md:h-[400px] bg-gradient-to-b from-gray-100 to-gray-200 rounded-lg overflow-hidden border border-gray-300 touch-manipulation">
             <SVGInspectionViewer
               templateType={bodyTypeToCarTemplate(inspectionData.bodyType)}
               viewAngle={currentAngle}
@@ -581,8 +581,8 @@ export function InspectionSection({
             />
           </div>
 
-          {/* Color Legend */}
-          <ColorLegend language={language} compact={false} />
+          {/* Color Legend - Compact on mobile */}
+          <ColorLegend language={language} compact={true} />
         </CardContent>
       </Card>
 
