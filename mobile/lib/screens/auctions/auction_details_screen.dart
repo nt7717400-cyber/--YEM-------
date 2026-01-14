@@ -845,6 +845,7 @@ class _UploadedVideoPlayerState extends State<_UploadedVideoPlayer> {
   bool _isInitialized = false;
   bool _isPlaying = false;
   bool _hasError = false;
+  bool _showControls = true;
 
   String get _fullVideoUrl => ApiEndpoints.getFullUrl(widget.videoUrl);
 
@@ -891,6 +892,25 @@ class _UploadedVideoPlayerState extends State<_UploadedVideoPlayer> {
     }
   }
 
+  void _seekForward() {
+    final currentPosition = _controller.value.position;
+    final duration = _controller.value.duration;
+    final newPosition = currentPosition + const Duration(seconds: 10);
+    _controller.seekTo(newPosition > duration ? duration : newPosition);
+  }
+
+  void _seekBackward() {
+    final currentPosition = _controller.value.position;
+    final newPosition = currentPosition - const Duration(seconds: 10);
+    _controller.seekTo(newPosition < Duration.zero ? Duration.zero : newPosition);
+  }
+
+  void _toggleControls() {
+    setState(() {
+      _showControls = !_showControls;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_hasError) {
@@ -925,20 +945,52 @@ class _UploadedVideoPlayerState extends State<_UploadedVideoPlayer> {
     return AspectRatio(
       aspectRatio: _controller.value.aspectRatio,
       child: GestureDetector(
-        onTap: _togglePlayPause,
+        onTap: _toggleControls,
         child: Stack(
           alignment: Alignment.center,
           children: [
             VideoPlayer(_controller),
-            if (!_isPlaying)
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.5),
-                  shape: BoxShape.circle,
+            // Controls overlay
+            AnimatedOpacity(
+              opacity: _showControls || !_isPlaying ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 300),
+              child: Container(
+                color: Colors.black.withValues(alpha: 0.3),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Rewind 10s
+                    IconButton(
+                      onPressed: _seekBackward,
+                      icon: const Icon(Icons.replay_10, color: Colors.white, size: 36),
+                    ),
+                    const SizedBox(width: 24),
+                    // Play/Pause
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.5),
+                        shape: BoxShape.circle,
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      child: IconButton(
+                        onPressed: _togglePlayPause,
+                        icon: Icon(
+                          _isPlaying ? Icons.pause : Icons.play_arrow,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 24),
+                    // Forward 10s
+                    IconButton(
+                      onPressed: _seekForward,
+                      icon: const Icon(Icons.forward_10, color: Colors.white, size: 36),
+                    ),
+                  ],
                 ),
-                padding: const EdgeInsets.all(12),
-                child: const Icon(Icons.play_arrow, color: Colors.white, size: 40),
               ),
+            ),
           ],
         ),
       ),

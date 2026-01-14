@@ -151,9 +151,9 @@ class _CarDetailsScreenState extends ConsumerState<CarDetailsScreen> {
       backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
       foregroundColor: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
       actions: [
-        // Share button - Requirements: 3.7
+        // Share button - Requirements: 3.7 - Green color for WhatsApp style
         IconButton(
-          icon: const Icon(Icons.share),
+          icon: const Icon(Icons.share, color: Color(0xFF25D366)),
           onPressed: () => _shareCar(car),
           tooltip: AppStrings.share,
         ),

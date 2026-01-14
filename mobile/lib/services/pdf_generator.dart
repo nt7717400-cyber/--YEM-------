@@ -1325,13 +1325,20 @@ class InspectionPDFGenerator {
                             borderRadius: pw.BorderRadius.circular(40),
                           ),
                           child: pw.Center(
-                            child: pw.Text(
-                              '✓',
-                              style: pw.TextStyle(
-                                font: _boldFont,
-                                fontSize: 40,
-                                color: PDFColors.white,
-                              ),
+                            child: pw.CustomPaint(
+                              size: const PdfPoint(40, 40),
+                              painter: (canvas, size) {
+                                // Draw checkmark manually
+                                canvas
+                                  ..setStrokeColor(PDFColors.white)
+                                  ..setLineWidth(5)
+                                  ..setLineCap(PdfLineCap.round)
+                                  ..setLineJoin(PdfLineJoin.round)
+                                  ..moveTo(8, 20)
+                                  ..lineTo(16, 28)
+                                  ..lineTo(32, 12)
+                                  ..strokePath();
+                              },
                             ),
                           ),
                         ),

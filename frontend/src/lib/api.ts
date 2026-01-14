@@ -284,8 +284,8 @@ class ApiClient {
     return result.data ?? [];
   }
 
-  async deleteImage(imageId: number): Promise<void> {
-    await this.request(`/images/${imageId}`, { method: 'DELETE' }, true);
+  async deleteImage(carId: number, imageId: number): Promise<void> {
+    await this.request(`/cars/${carId}/images/${imageId}`, { method: 'DELETE' }, true);
   }
 
   async reorderImages(carId: number, imageIds: number[]): Promise<void> {

@@ -174,8 +174,9 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
   };
 
   const removeExistingImage = async (imageId: number) => {
+    if (!car?.id) return;
     try {
-      await api.deleteImage(imageId);
+      await api.deleteImage(car.id, imageId);
       setImages(prev => prev.filter(img => img.id !== imageId));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'حدث خطأ في حذف الصورة');
