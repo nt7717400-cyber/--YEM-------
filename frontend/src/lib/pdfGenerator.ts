@@ -400,7 +400,7 @@ export class InspectionPDFGenerator {
 
   /**
    * Convert image URL to base64 for print window
-   * Uses multiple methods to handle CORS issues
+   * Uses server-side proxy to bypass CORS issues
    */
   private async imageToBase64(url: string): Promise<string> {
     if (!url) return '';
@@ -413,65 +413,88 @@ export class InspectionPDFGenerator {
       const fullUrl = url.startsWith('http') ? url : getImageUrl(url);
       console.log('Converting image to base64:', fullUrl);
       
-      // Method 1: Try fetch with no-cors mode
+      // Method 1: Use our server-side proxy (best method - no CORS issues)
+      try {
+        const proxyUrl = `/api/image-proxy?url=${encodeURIComponent(fullUrl)}`;
+        const proxyResponse = await fetch(proxyUrl);
+        
+        if (proxyResponse.ok) {
+          const data = await proxyResponse.json();
+          if (data.dataUrl) {
+            console.log('Image converted successfully via server proxy');
+            return data.dataUrl;
+          }
+        }
+      } catch (proxyError) {
+        console.log('Server proxy failed:', proxyError);
+      }
+      
+      // Method 2: Try direct fetch (works if CORS is properly configured)
       try {
         const response = await fetch(fullUrl, {
           mode: 'cors',
           credentials: 'omit',
-          headers: {
-            'Accept': 'image/*',
-          },
         });
         
         if (response.ok) {
           const blob = await response.blob();
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             const reader = new FileReader();
             reader.onloadend = () => {
               const result = reader.result as string;
-              console.log('Image converted successfully via fetch');
-              resolve(result);
+              if (result && result.startsWith('data:')) {
+                console.log('Image converted successfully via direct fetch');
+                resolve(result);
+              } else {
+                resolve('');
+              }
             };
-            reader.onerror = reject;
+            reader.onerror = () => resolve('');
             reader.readAsDataURL(blob);
           });
         }
       } catch (fetchError) {
-        console.log('Fetch failed, trying canvas method:', fetchError);
+        console.log('Direct fetch failed:', fetchError);
       }
       
-      // Method 2: Use canvas to convert image
+      // Method 3: Use canvas with timeout (fallback)
       return new Promise((resolve) => {
         const img = new Image();
         img.crossOrigin = 'anonymous';
         
+        const timeout = setTimeout(() => {
+          console.log('Image load timeout');
+          resolve('');
+        }, 5000);
+        
         img.onload = () => {
+          clearTimeout(timeout);
           try {
             const canvas = document.createElement('canvas');
-            canvas.width = img.naturalWidth || img.width;
-            canvas.height = img.naturalHeight || img.height;
+            canvas.width = img.naturalWidth || img.width || 400;
+            canvas.height = img.naturalHeight || img.height || 300;
             const ctx = canvas.getContext('2d');
             if (ctx) {
               ctx.drawImage(img, 0, 0);
-              const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+              const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
               console.log('Image converted successfully via canvas');
               resolve(dataUrl);
             } else {
               resolve('');
             }
           } catch (canvasError) {
-            console.error('Canvas conversion failed:', canvasError);
+            console.error('Canvas conversion failed (CORS tainted):', canvasError);
             resolve('');
           }
         };
         
         img.onerror = () => {
+          clearTimeout(timeout);
           console.error('Image load failed for:', fullUrl);
           resolve('');
         };
         
-        // Add timestamp to bypass cache
-        img.src = fullUrl + (fullUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
+        img.src = fullUrl;
       });
     } catch (error) {
       console.error('Failed to convert image to base64:', error);
