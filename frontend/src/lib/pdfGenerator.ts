@@ -32,7 +32,7 @@ export interface InspectionPDFData {
 
 export const DEFAULT_PDF_OPTIONS: PDFReportOptions = {
   language: 'ar',
-  companyName: 'SHAS Motors',
+  companyName: 'معرض وحدة اليمن للسيارات',
   paperSize: 'A4',
   includeSections: {
     vehicleInfo: true,
@@ -223,8 +223,9 @@ body{font-family:'Cairo',sans-serif;font-size:11px;color:#1f2937;direction:rtl;b
 <!-- SECTION 1: Cover -->
 <div style="background:linear-gradient(180deg,#1e40af 0%,#3b82f6 100%);padding:20px;">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
-    <span style="font-size:14px;color:white;font-weight:600;">${options.companyName || 'معرض السيارات'}</span>
-    <div style="width:45px;height:45px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#1e40af;">م</div>
+    <span style="font-size:16px;color:white;font-weight:700;">معرض وحدة اليمن للسيارات</span>
+    <img src="/logo.png" style="width:55px;height:55px;background:white;border-radius:10px;padding:4px;object-fit:contain;" alt="شعار معرض وحدة اليمن" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+    <div style="width:55px;height:55px;background:white;border-radius:10px;display:none;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#1e40af;">وحدة</div>
   </div>
   <div style="background:white;border-radius:12px;padding:20px;text-align:center;">
     <div style="font-size:20px;font-weight:700;color:#1e40af;margin-bottom:12px;">تقرير فحص السيارة</div>
@@ -376,7 +377,7 @@ ${data.technicalNotes ? `
 <div style="padding:15px 20px;background:#f8fafc;border-top:1px solid #e5e7eb;">
   <div style="display:flex;justify-content:space-between;align-items:center;">
     <span style="font-size:9px;color:#6b7280;">تم إنشاء التقرير في: ${dateStr}</span>
-    <span style="font-size:10px;font-weight:600;color:#1e40af;">${options.companyName || 'معرض السيارات'}</span>
+    <span style="font-size:11px;font-weight:700;color:#1e40af;">معرض وحدة اليمن للسيارات</span>
     <span style="font-size:9px;color:#6b7280;">تقرير رقم: #${data.car?.id || '---'}</span>
   </div>
 </div>

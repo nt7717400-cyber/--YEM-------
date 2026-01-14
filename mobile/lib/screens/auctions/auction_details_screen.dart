@@ -23,7 +23,6 @@ import 'package:customer_app/widgets/bids_list.dart';
 import 'package:customer_app/widgets/error_widget.dart';
 import 'package:customer_app/widgets/image_gallery.dart';
 import 'package:customer_app/screens/inspection/inspection_view_screen.dart';
-import 'package:customer_app/constants/inspection_constants.dart';
 
 /// Auction Details Screen - شاشة تفاصيل المزاد
 /// Requirements: 3.2, 4.1
@@ -1117,6 +1116,13 @@ class _UploadedVideoPlayerState extends State<_UploadedVideoPlayer> {
     });
   }
 
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$minutes:$seconds';
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_hasError) {
@@ -1162,36 +1168,102 @@ class _UploadedVideoPlayerState extends State<_UploadedVideoPlayer> {
               duration: const Duration(milliseconds: 300),
               child: Container(
                 color: Colors.black.withValues(alpha: 0.3),
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Rewind 10s
-                    IconButton(
-                      onPressed: _seekBackward,
-                      icon: const Icon(Icons.replay_10, color: Colors.white, size: 36),
-                    ),
-                    const SizedBox(width: 24),
-                    // Play/Pause
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.5),
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(12),
-                      child: IconButton(
-                        onPressed: _togglePlayPause,
-                        icon: Icon(
-                          _isPlaying ? Icons.pause : Icons.play_arrow,
-                          color: Colors.white,
-                          size: 40,
+                    // Main controls row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Rewind 10s
+                        IconButton(
+                          onPressed: _seekBackward,
+                          icon: const Icon(Icons.replay_10, color: Colors.white, size: 36),
                         ),
+                        const SizedBox(width: 24),
+                        // Play/Pause
+                        GestureDetector(
+                          onTap: _togglePlayPause,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.5),
+                              shape: BoxShape.circle,
+                            ),
+                            padding: const EdgeInsets.all(12),
+                            child: Icon(
+                              _isPlaying ? Icons.pause : Icons.play_arrow,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 24),
+                        // Forward 10s
+                        IconButton(
+                          onPressed: _seekForward,
+                          icon: const Icon(Icons.forward_10, color: Colors.white, size: 36),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Bottom progress bar and time
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.black.withValues(alpha: 0.7),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Progress slider
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: 3,
+                        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                        overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
+                        activeTrackColor: AppColors.primary,
+                        inactiveTrackColor: Colors.white.withValues(alpha: 0.3),
+                        thumbColor: AppColors.primary,
+                      ),
+                      child: Slider(
+                        value: _controller.value.position.inMilliseconds.toDouble(),
+                        min: 0,
+                        max: _controller.value.duration.inMilliseconds.toDouble(),
+                        onChanged: (value) {
+                          _controller.seekTo(Duration(milliseconds: value.toInt()));
+                        },
                       ),
                     ),
-                    const SizedBox(width: 24),
-                    // Forward 10s
-                    IconButton(
-                      onPressed: _seekForward,
-                      icon: const Icon(Icons.forward_10, color: Colors.white, size: 36),
+                    // Time display
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _formatDuration(_controller.value.position),
+                            style: const TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                          Text(
+                            _formatDuration(_controller.value.duration),
+                            style: const TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

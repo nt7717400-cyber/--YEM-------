@@ -88,18 +88,18 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _startAnimationSequence() async {
-    // Sequence: Logo -> Text -> Loading
-    await Future.delayed(const Duration(milliseconds: 200));
+    // Sequence: Logo -> Text -> Loading (faster for better UX)
+    await Future.delayed(const Duration(milliseconds: 100));
     _logoController.forward();
 
-    await Future.delayed(const Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 500));
     _textController.forward();
 
-    await Future.delayed(const Duration(milliseconds: 400));
+    await Future.delayed(const Duration(milliseconds: 300));
     _loadingController.forward();
 
-    // Navigate after 4 seconds total
-    await Future.delayed(const Duration(milliseconds: 2600));
+    // Navigate after 2 seconds total (faster splash)
+    await Future.delayed(const Duration(milliseconds: 1100));
     _navigateToHome();
   }
 

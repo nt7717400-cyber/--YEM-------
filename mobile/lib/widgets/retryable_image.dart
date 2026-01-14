@@ -13,6 +13,8 @@ class RetryableImage extends StatelessWidget {
   final int maxRetries;
   final Widget? placeholder;
   final Widget? errorWidget;
+  final double? width;
+  final double? height;
 
   const RetryableImage({
     super.key,
@@ -21,6 +23,8 @@ class RetryableImage extends StatelessWidget {
     this.maxRetries = 3,
     this.placeholder,
     this.errorWidget,
+    this.width,
+    this.height,
   });
 
   @override
@@ -30,8 +34,15 @@ class RetryableImage extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: imageUrl,
       fit: fit,
-      memCacheWidth: 800,
-      memCacheHeight: 800,
+      width: width,
+      height: height,
+      // Optimize memory by resizing cached images
+      memCacheWidth: width?.toInt() ?? 800,
+      memCacheHeight: height?.toInt() ?? 800,
+      // Faster fade animations
+      fadeInDuration: const Duration(milliseconds: 150),
+      fadeOutDuration: const Duration(milliseconds: 100),
+      // Use placeholder and error widgets
       placeholder: (context, url) => placeholder ?? _buildDefaultPlaceholder(isDark),
       errorWidget: (context, url, error) {
         debugPrint('Image error for $imageUrl: $error');
@@ -43,8 +54,15 @@ class RetryableImage extends StatelessWidget {
   Widget _buildDefaultPlaceholder(bool isDark) {
     return Container(
       color: isDark ? AppColors.shimmerBaseDark : AppColors.shimmerBase,
-      child: const Center(
-        child: CircularProgressIndicator(strokeWidth: 2),
+      child: Center(
+        child: SizedBox(
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: isDark ? AppColors.textHintDark : AppColors.primary,
+          ),
+        ),
       ),
     );
   }
@@ -53,8 +71,8 @@ class RetryableImage extends StatelessWidget {
     return Container(
       color: isDark ? AppColors.surfaceDark : AppColors.shimmerBase,
       child: Icon(
-        Icons.broken_image,
-        size: 48,
+        Icons.broken_image_outlined,
+        size: 32,
         color: isDark ? AppColors.textHintDark : AppColors.textHintLight,
       ),
     );

@@ -96,8 +96,9 @@ const defaultPDFOptions = PDFReportOptions(
   includeDamageTable: true,
   includeCarPhotos: true,
   includePartPhotos: true,
-  companyName: 'معرض السيارات',
-  companyPhone: '+967 XXX XXX XXX',
+  companyName: 'معرض وحدة اليمن للسيارات',
+  companyPhone: '+967 777 XXX XXX',
+  companyAddress: 'اليمن - صنعاء',
 );
 
 /// PDF Color constants
@@ -218,6 +219,9 @@ class InspectionPDFGenerator {
   // Cached images
   final Map<String, pw.MemoryImage?> _imageCache = {};
   
+  // Logo image
+  pw.MemoryImage? _logoImage;
+  
   // Font sizes - LARGER for better readability
   static const double titleSize = 28;
   static const double headerSize = 18;
@@ -240,6 +244,7 @@ class InspectionPDFGenerator {
   /// Generate the PDF document
   Future<Uint8List> generate() async {
     await _loadFonts();
+    await _loadLogo();
     
     _textDirection = options.language == 'ar' 
         ? pw.TextDirection.rtl 
@@ -252,8 +257,8 @@ class InspectionPDFGenerator {
         fontFallback: [_fallbackFont],
       ),
       title: labels.reportTitle,
-      author: options.companyName ?? 'Car Showroom',
-      creator: 'Vehicle Inspection System',
+      author: options.companyName ?? 'معرض وحدة اليمن للسيارات',
+      creator: 'معرض وحدة اليمن للسيارات',
       subject: 'Vehicle Inspection Report',
     );
 
@@ -327,6 +332,19 @@ class InspectionPDFGenerator {
           _boldFont = pw.Font.helveticaBold();
         }
       }
+    }
+  }
+
+  /// Load logo from assets
+  Future<void> _loadLogo() async {
+    try {
+      debugPrint('Loading logo from assets...');
+      final logoData = await rootBundle.load('assets/images/logo.png');
+      _logoImage = pw.MemoryImage(logoData.buffer.asUint8List());
+      debugPrint('Logo loaded successfully');
+    } catch (e) {
+      debugPrint('Failed to load logo: $e');
+      _logoImage = null;
     }
   }
 
@@ -486,46 +504,52 @@ class InspectionPDFGenerator {
     );
   }
 
-  /// Build cover page header
+  /// Build cover page header with logo
   pw.Widget _buildCoverHeader() {
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
-        // Logo placeholder
+        // Logo - استخدام الشعار الفعلي
         pw.Container(
-          width: 70,
-          height: 70,
+          width: 80,
+          height: 80,
           decoration: pw.BoxDecoration(
             color: PDFColors.white,
-            borderRadius: pw.BorderRadius.circular(10),
+            borderRadius: pw.BorderRadius.circular(12),
           ),
-          child: pw.Center(
-            child: pw.Text(
-              options.companyName?.isNotEmpty == true 
-                  ? options.companyName!.substring(0, 1) 
-                  : 'C',
-              style: pw.TextStyle(
-                font: _boldFont,
-                fontSize: 32,
-                color: PDFColors.primary,
-              ),
-            ),
+          child: pw.ClipRRect(
+            horizontalRadius: 12,
+            verticalRadius: 12,
+            child: _logoImage != null
+                ? pw.Image(_logoImage!, fit: pw.BoxFit.contain)
+                : pw.Center(
+                    child: pw.Text(
+                      'وحدة',
+                      style: pw.TextStyle(
+                        font: _boldFont,
+                        fontSize: 20,
+                        color: PDFColors.primary,
+                      ),
+                      textDirection: _textDirection,
+                    ),
+                  ),
           ),
         ),
         
-        // Company info
+        // Company info - معلومات المعرض
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.end,
           children: [
             pw.Text(
-              options.companyName ?? '',
+              'معرض وحدة اليمن للسيارات',
               style: pw.TextStyle(
                 font: _boldFont,
-                fontSize: headerSize,
+                fontSize: headerSize + 2,
                 color: PDFColors.white,
               ),
               textDirection: _textDirection,
             ),
+            pw.SizedBox(height: 4),
             if (options.companyPhone != null)
               pw.Text(
                 options.companyPhone!,
@@ -534,6 +558,16 @@ class InspectionPDFGenerator {
                   fontSize: bodySize,
                   color: PdfColor.fromInt(0xCCFFFFFF),
                 ),
+              ),
+            if (options.companyAddress != null)
+              pw.Text(
+                options.companyAddress!,
+                style: pw.TextStyle(
+                  font: _regularFont,
+                  fontSize: smallSize,
+                  color: PdfColor.fromInt(0xAAFFFFFF),
+                ),
+                textDirection: _textDirection,
               ),
           ],
         ),
@@ -751,11 +785,11 @@ class InspectionPDFGenerator {
     );
   }
 
-  /// Build page header
+  /// Build page header with logo
   pw.Widget _buildPageHeader(String title) {
     return pw.Container(
       width: double.infinity,
-      padding: const pw.EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const pw.EdgeInsets.symmetric(horizontal: 15, vertical: 12),
       decoration: const pw.BoxDecoration(
         color: PDFColors.primary,
         borderRadius: pw.BorderRadius.all(pw.Radius.circular(10)),
@@ -763,22 +797,58 @@ class InspectionPDFGenerator {
       child: pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
-          pw.Text(
-            title,
-            style: pw.TextStyle(
-              font: _boldFont,
-              fontSize: headerSize,
-              color: PDFColors.white,
-            ),
-            textDirection: _textDirection,
+          // Logo and title
+          pw.Row(
+            children: [
+              // Small logo
+              if (_logoImage != null)
+                pw.Container(
+                  width: 35,
+                  height: 35,
+                  margin: const pw.EdgeInsets.only(left: 10),
+                  decoration: pw.BoxDecoration(
+                    color: PDFColors.white,
+                    borderRadius: pw.BorderRadius.circular(6),
+                  ),
+                  child: pw.ClipRRect(
+                    horizontalRadius: 6,
+                    verticalRadius: 6,
+                    child: pw.Image(_logoImage!, fit: pw.BoxFit.contain),
+                  ),
+                ),
+              pw.Text(
+                title,
+                style: pw.TextStyle(
+                  font: _boldFont,
+                  fontSize: headerSize,
+                  color: PDFColors.white,
+                ),
+                textDirection: _textDirection,
+              ),
+            ],
           ),
-          pw.Text(
-            '#${inspection.id}',
-            style: pw.TextStyle(
-              font: _regularFont,
-              fontSize: bodySize,
-              color: PdfColor.fromInt(0xCCFFFFFF),
-            ),
+          // Company name and report ID
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.end,
+            children: [
+              pw.Text(
+                'معرض وحدة اليمن',
+                style: pw.TextStyle(
+                  font: _boldFont,
+                  fontSize: smallSize,
+                  color: PDFColors.white,
+                ),
+                textDirection: _textDirection,
+              ),
+              pw.Text(
+                '#${inspection.id}',
+                style: pw.TextStyle(
+                  font: _regularFont,
+                  fontSize: tinySize,
+                  color: PdfColor.fromInt(0xCCFFFFFF),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -1498,7 +1568,7 @@ class InspectionPDFGenerator {
     );
   }
 
-  /// Build page footer
+  /// Build page footer with company branding
   pw.Widget _buildPageFooter(pw.Context context) {
     return pw.Container(
       width: double.infinity,
@@ -1527,11 +1597,11 @@ class InspectionPDFGenerator {
             ),
           ),
           pw.Text(
-            options.companyName ?? '',
+            'معرض وحدة اليمن للسيارات',
             style: pw.TextStyle(
-              font: _regularFont,
+              font: _boldFont,
               fontSize: tinySize,
-              color: PDFColors.grey,
+              color: PDFColors.primary,
             ),
             textDirection: _textDirection,
           ),

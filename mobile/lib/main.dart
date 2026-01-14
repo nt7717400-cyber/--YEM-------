@@ -20,8 +20,8 @@ void main() async {
   // Initialize Hive for local storage
   await Hive.initFlutter();
   
-  // Configure Google Fonts to use Cairo for Arabic
-  GoogleFonts.config.allowRuntimeFetching = true;
+  // Configure Google Fonts - disable runtime fetching for faster startup
+  GoogleFonts.config.allowRuntimeFetching = false;
   
   // Set preferred orientations
   await SystemChrome.setPreferredOrientations([

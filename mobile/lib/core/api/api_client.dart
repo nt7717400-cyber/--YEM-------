@@ -26,21 +26,19 @@ class ApiClient {
   void _configureDio() {
     _dio.options = BaseOptions(
       baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      sendTimeout: const Duration(seconds: 30),
+      // Reduced timeouts for faster failure detection
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 15),
+      sendTimeout: const Duration(seconds: 15),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        // Enable compression for faster data transfer
+        'Accept-Encoding': 'gzip, deflate',
       },
+      // Enable response validation
+      validateStatus: (status) => status != null && status < 500,
     );
-
-    // Add logging interceptor for debug
-    _dio.interceptors.add(LogInterceptor(
-      requestBody: true,
-      responseBody: true,
-      error: true,
-    ));
 
     // Add error handling interceptor
     _dio.interceptors.add(InterceptorsWrapper(
