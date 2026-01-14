@@ -234,7 +234,7 @@ class ApiClient {
   }
 
   async incrementViewCount(id: number): Promise<void> {
-    await this.request(`/cars/${id}/view`, { method: 'PUT' });
+    await this.request(`/cars/${id}/view`, { method: 'POST' });
   }
 
   async toggleFeatured(id: number): Promise<Car> {

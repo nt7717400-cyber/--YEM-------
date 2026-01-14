@@ -1328,15 +1328,16 @@ class InspectionPDFGenerator {
                             child: pw.CustomPaint(
                               size: const PdfPoint(40, 40),
                               painter: (canvas, size) {
-                                // Draw checkmark manually
+                                // Draw checkmark manually (PDF Y-axis is inverted)
+                                // Checkmark: starts bottom-left, goes to bottom-middle, then to top-right
                                 canvas
                                   ..setStrokeColor(PDFColors.white)
                                   ..setLineWidth(5)
                                   ..setLineCap(PdfLineCap.round)
                                   ..setLineJoin(PdfLineJoin.round)
-                                  ..moveTo(8, 20)
-                                  ..lineTo(16, 28)
-                                  ..lineTo(32, 12)
+                                  ..moveTo(8, 20)      // Start left
+                                  ..lineTo(16, 12)    // Go down to middle-bottom
+                                  ..lineTo(32, 28)    // Go up to right-top
                                   ..strokePath();
                               },
                             ),

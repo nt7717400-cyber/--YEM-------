@@ -406,6 +406,42 @@ class AuctionsController {
         }
     }
 
+    /**
+     * Delete auction (admin only)
+     * DELETE /api/auctions/:id
+     */
+    public function delete(int $id) {
+        try {
+            // Check if auction exists
+            $stmt = $this->db->prepare("SELECT * FROM auctions WHERE id = ?");
+            $stmt->execute([$id]);
+            $auction = $stmt->fetch();
+
+            if (!$auction) {
+                Response::error('المزاد غير موجود', 404, 'AUCTION_NOT_FOUND');
+            }
+
+            $this->db->beginTransaction();
+
+            // Delete all bids for this auction first
+            $deleteBidsStmt = $this->db->prepare("DELETE FROM bids WHERE auction_id = ?");
+            $deleteBidsStmt->execute([$id]);
+
+            // Delete the auction
+            $deleteStmt = $this->db->prepare("DELETE FROM auctions WHERE id = ?");
+            $deleteStmt->execute([$id]);
+
+            $this->db->commit();
+
+            Response::success(['message' => 'تم حذف المزاد بنجاح']);
+
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            error_log("AuctionsController::delete error: " . $e->getMessage());
+            Response::error('حدث خطأ في حذف المزاد', 500, 'SRV_001');
+        }
+    }
+
 
     /**
      * Validate bid data

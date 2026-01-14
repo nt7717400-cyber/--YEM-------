@@ -586,17 +586,24 @@ class _AuctionDetailsScreenState extends ConsumerState<AuctionDetailsScreen> {
     );
   }
 
-  /// Share auction
+  /// Share auction with product link
   Future<void> _shareAuction(Auction auction) async {
     final car = auction.car;
     final carName = car?.name ?? 'سيارة';
     final price = Formatters.formatCurrency(auction.currentPrice);
+    
+    // رابط المنتج على الويب
+    final productUrl = 'https://fazaacaetg.com/auctions/${auction.id}';
     
     final message = '''
 🚗 مزاد: $carName
 
 💰 السعر الحالي: $price
 📊 عدد العروض: ${auction.bidCount}
+⏰ ينتهي في: ${Formatters.formatDate(auction.endTime)}
+
+🔗 رابط المزاد:
+$productUrl
 
 🏪 معرض وحدة اليمن للسيارات
 ''';
@@ -604,16 +611,21 @@ class _AuctionDetailsScreenState extends ConsumerState<AuctionDetailsScreen> {
     await Share.share(message, subject: 'مزاد: $carName');
   }
 
-  /// Open WhatsApp with pre-filled message
+  /// Open WhatsApp with pre-filled message and product link
   Future<void> _openWhatsApp(Auction auction, String whatsapp) async {
     final car = auction.car;
     final carName = car?.name ?? 'سيارة';
     final price = Formatters.formatCurrency(auction.currentPrice);
     
+    // رابط المنتج على الويب
+    final productUrl = 'https://fazaacaetg.com/auctions/${auction.id}';
+    
     final message = Uri.encodeComponent(
       'مرحباً، أنا مهتم بالمزاد:\n'
       '🚗 $carName\n'
-      '💰 السعر الحالي: $price'
+      '💰 السعر الحالي: $price\n\n'
+      '🔗 رابط المزاد:\n'
+      '$productUrl'
     );
     
     // Clean phone number

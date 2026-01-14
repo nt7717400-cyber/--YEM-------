@@ -180,8 +180,11 @@ class UrlLauncherUtils {
     return cleaned;
   }
 
-  /// Generate car inquiry message in Arabic
+  /// Generate car inquiry message in Arabic with product link
   static String _generateCarInquiryMessage(Car car) {
+    // رابط المنتج على الويب
+    final productUrl = 'https://fazaacaetg.com/cars/${car.id}';
+    
     final buffer = StringBuffer();
     buffer.writeln('مرحباً،');
     buffer.writeln('أرغب في الاستفسار عن السيارة التالية:');
@@ -191,6 +194,12 @@ class UrlLauncherUtils {
     buffer.writeln('📋 الموديل: ${car.model}');
     buffer.writeln('📅 السنة: ${car.year}');
     buffer.writeln('💰 السعر: ${car.price.toStringAsFixed(0)} ر.ي');
+    if (car.kilometers != null) {
+      buffer.writeln('🛣️ المسافة: ${car.kilometers} كم');
+    }
+    buffer.writeln('');
+    buffer.writeln('🔗 رابط المنتج:');
+    buffer.writeln(productUrl);
     buffer.writeln('');
     buffer.writeln('شكراً لكم');
     

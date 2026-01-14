@@ -265,6 +265,10 @@ elseif (preg_match('#^/cars/(\d+)/duplicate$#', $uri, $matches) && $method === '
     AuthMiddleware::authenticate();
     $carsController->duplicate((int)$matches[1]);
 }
+elseif (preg_match('#^/cars/(\d+)/archive$#', $uri, $matches) && $method === 'PUT') {
+    AuthMiddleware::authenticate();
+    $carsController->archive((int)$matches[1]);
+}
 
 // Inspection Routes
 elseif (preg_match('#^/cars/(\d+)/inspection$#', $uri, $matches) && $method === 'GET') {
@@ -363,6 +367,19 @@ elseif (preg_match('#^/admin/auctions/(\d+)$#', $uri, $matches) && $method === '
 elseif (preg_match('#^/admin/auctions/(\d+)/status$#', $uri, $matches) && $method === 'PUT') {
     AuthMiddleware::authenticate();
     $auctionsController->updateStatus((int)$matches[1]);
+}
+// Direct auction routes (without /admin prefix)
+elseif (preg_match('#^/auctions/(\d+)$#', $uri, $matches) && $method === 'PUT') {
+    AuthMiddleware::authenticate();
+    $auctionsController->update((int)$matches[1]);
+}
+elseif (preg_match('#^/auctions/(\d+)$#', $uri, $matches) && $method === 'DELETE') {
+    AuthMiddleware::authenticate();
+    $auctionsController->delete((int)$matches[1]);
+}
+elseif (preg_match('#^/auctions/(\d+)/bids/(\d+)$#', $uri, $matches) && $method === 'DELETE') {
+    AuthMiddleware::authenticate();
+    $auctionsController->deleteBid((int)$matches[1], (int)$matches[2]);
 }
 
 // Dashboard Stats (Admin - Protected)

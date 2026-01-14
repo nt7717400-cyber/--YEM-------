@@ -5,6 +5,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:customer_app/core/constants/app_colors.dart';
@@ -63,21 +64,65 @@ class _CarDetailsScreenState extends ConsumerState<CarDetailsScreen> {
     ref.invalidate(carDetailsProvider(widget.carId));
   }
 
-  /// Share car details
+  /// Share car details with product link
   /// Requirements: 3.7
   Future<void> _shareCar(Car car) async {
+    // رابط المنتج على الويب
+    final productUrl = 'https://fazaacaetg.com/cars/${car.id}';
+    
     final shareText = '''
+🚗 ${car.name}
+
+📌 الماركة: ${car.brand}
+📋 الموديل: ${car.model}
+📅 السنة: ${car.year}
+💰 السعر: ${Formatters.formatCurrency(car.price)}
+🔹 الحالة: ${car.condition == CarCondition.newCar ? AppStrings.newCar : AppStrings.usedCar}
+${car.kilometers != null ? '🛣️ المسافة: ${Formatters.formatNumber(car.kilometers!)} كم\n' : ''}
+🔗 رابط المنتج:
+$productUrl
+
+معرض السيارات - تصفح أفضل السيارات المتاحة
+''';
+
+    await Share.share(shareText, subject: car.name);
+  }
+
+  /// Share car via WhatsApp with product details
+  Future<void> _shareViaWhatsApp(Car car, String? phoneNumber) async {
+    // رابط المنتج على الويب
+    final productUrl = 'https://fazaacaetg.com/cars/${car.id}';
+    
+    final message = '''
+مرحباً، أنا مهتم بهذه السيارة:
+
 🚗 ${car.name}
 📌 الماركة: ${car.brand}
 📋 الموديل: ${car.model}
 📅 السنة: ${car.year}
 💰 السعر: ${Formatters.formatCurrency(car.price)}
 🔹 الحالة: ${car.condition == CarCondition.newCar ? AppStrings.newCar : AppStrings.usedCar}
+${car.kilometers != null ? '🛣️ المسافة: ${Formatters.formatNumber(car.kilometers!)} كم\n' : ''}
+🔗 رابط المنتج:
+$productUrl
 
-معرض السيارات - تصفح أفضل السيارات المتاحة
+أرجو التواصل معي للمزيد من التفاصيل.
 ''';
 
-    await Share.share(shareText, subject: car.name);
+    final encodedMessage = Uri.encodeComponent(message);
+    final phone = phoneNumber?.replaceAll(RegExp(r'[^\d+]'), '') ?? '';
+    
+    final whatsappUrl = phone.isNotEmpty 
+        ? 'https://wa.me/$phone?text=$encodedMessage'
+        : 'https://wa.me/?text=$encodedMessage';
+    
+    final uri = Uri.parse(whatsappUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      // إذا فشل فتح الواتساب، انسخ النص للمشاركة العادية
+      await Share.share(message, subject: car.name);
+    }
   }
 
   @override
