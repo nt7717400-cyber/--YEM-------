@@ -7,6 +7,15 @@
         </trust-anchors>
     </base-config>
     
+    <!-- Production domain configuration -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">fazaacaetg.com</domain>
+        <domain includeSubdomains="true">api.fazaacaetg.com</domain>
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+    
     <!-- Specific domain configuration for local development -->
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">10.0.2.2</domain>
