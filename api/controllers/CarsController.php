@@ -766,7 +766,12 @@ class CarsController {
         $minIncrement = isset($data['minIncrement']) && $data['minIncrement'] !== '' 
             ? (float)$data['minIncrement'] 
             : 100.00;
+        
+        // Convert ISO datetime to MySQL format
         $endTime = $data['endTime'];
+        if (strpos($endTime, 'T') !== false) {
+            $endTime = date('Y-m-d H:i:s', strtotime($endTime));
+        }
 
         $stmt = $this->db->prepare("
             INSERT INTO auctions (car_id, starting_price, reserve_price, current_price, min_increment, end_time, status)
@@ -820,8 +825,13 @@ class CarsController {
         }
 
         if (isset($data['endTime'])) {
+            // Convert ISO datetime to MySQL format
+            $endTime = $data['endTime'];
+            if (strpos($endTime, 'T') !== false) {
+                $endTime = date('Y-m-d H:i:s', strtotime($endTime));
+            }
             $updates[] = "end_time = ?";
-            $params[] = $data['endTime'];
+            $params[] = $endTime;
         }
 
         if (!empty($updates)) {
