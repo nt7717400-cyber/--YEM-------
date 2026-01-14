@@ -314,6 +314,11 @@ elseif (preg_match('#^/banners/(\d+)$#', $uri, $matches) && $method === 'PUT') {
     AuthMiddleware::authenticate();
     $bannersController->update((int)$matches[1]);
 }
+elseif (preg_match('#^/banners/(\d+)$#', $uri, $matches) && $method === 'POST') {
+    // Support POST for update (FormData works better with POST)
+    AuthMiddleware::authenticate();
+    $bannersController->update((int)$matches[1]);
+}
 elseif (preg_match('#^/banners/(\d+)$#', $uri, $matches) && $method === 'DELETE') {
     AuthMiddleware::authenticate();
     $bannersController->delete((int)$matches[1]);
