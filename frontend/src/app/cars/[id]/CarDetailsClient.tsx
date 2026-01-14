@@ -369,7 +369,7 @@ function VideoSection({ video }: { video: Car['video'] }) {
   return (
     <div className="aspect-video rounded-lg overflow-hidden bg-black">
       <video
-        src={video.url.replace('/uploads/videos/', '/videos/')}
+        src={video.url.startsWith('http') ? video.url : `${process.env.NEXT_PUBLIC_API_URL}${video.url}`}
         controls
         className="w-full h-full"
       />
