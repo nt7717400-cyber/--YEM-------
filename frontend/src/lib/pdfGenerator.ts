@@ -400,19 +400,78 @@ export class InspectionPDFGenerator {
 
   /**
    * Convert image URL to base64 for print window
+   * Uses multiple methods to handle CORS issues
    */
   private async imageToBase64(url: string): Promise<string> {
+    if (!url) return '';
+    
     try {
-      const fullUrl = url.startsWith('data:') ? url : (url.startsWith('http') ? url : getImageUrl(url));
-      if (fullUrl.startsWith('data:')) return fullUrl;
+      // If already base64, return as is
+      if (url.startsWith('data:')) return url;
       
-      const response = await fetch(fullUrl);
-      const blob = await response.blob();
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
+      // Get full URL
+      const fullUrl = url.startsWith('http') ? url : getImageUrl(url);
+      console.log('Converting image to base64:', fullUrl);
+      
+      // Method 1: Try fetch with no-cors mode
+      try {
+        const response = await fetch(fullUrl, {
+          mode: 'cors',
+          credentials: 'omit',
+          headers: {
+            'Accept': 'image/*',
+          },
+        });
+        
+        if (response.ok) {
+          const blob = await response.blob();
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const result = reader.result as string;
+              console.log('Image converted successfully via fetch');
+              resolve(result);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          });
+        }
+      } catch (fetchError) {
+        console.log('Fetch failed, trying canvas method:', fetchError);
+      }
+      
+      // Method 2: Use canvas to convert image
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth || img.width;
+            canvas.height = img.naturalHeight || img.height;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(img, 0, 0);
+              const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+              console.log('Image converted successfully via canvas');
+              resolve(dataUrl);
+            } else {
+              resolve('');
+            }
+          } catch (canvasError) {
+            console.error('Canvas conversion failed:', canvasError);
+            resolve('');
+          }
+        };
+        
+        img.onerror = () => {
+          console.error('Image load failed for:', fullUrl);
+          resolve('');
+        };
+        
+        // Add timestamp to bypass cache
+        img.src = fullUrl + (fullUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
       });
     } catch (error) {
       console.error('Failed to convert image to base64:', error);
@@ -431,11 +490,16 @@ export class InspectionPDFGenerator {
       
       // Convert thumbnail
       if (newData.car.thumbnail) {
-        newData.car.thumbnail = await this.imageToBase64(newData.car.thumbnail);
+        console.log('Converting thumbnail:', newData.car.thumbnail);
+        const base64 = await this.imageToBase64(newData.car.thumbnail);
+        if (base64) {
+          newData.car.thumbnail = base64;
+        }
       }
       
-      // Convert first image if no thumbnail
-      if (!newData.car.thumbnail && newData.car.images?.[0]?.url) {
+      // Convert first image if no thumbnail or thumbnail conversion failed
+      if ((!newData.car.thumbnail || !newData.car.thumbnail.startsWith('data:')) && newData.car.images?.[0]?.url) {
+        console.log('Converting first image:', newData.car.images[0].url);
         const base64 = await this.imageToBase64(newData.car.images[0].url);
         if (base64) {
           newData.car.thumbnail = base64;
@@ -459,8 +523,10 @@ export class InspectionPDFGenerator {
   async download(filename?: string): Promise<void> {
     // Convert images to base64 first
     const dataWithBase64 = await this.convertImagesToBase64();
-    const generator = new InspectionPDFGenerator(dataWithBase64, this.options);
-    const html = generator.generateHTML();
+    
+    // Update this instance's data with converted images
+    this.data = dataWithBase64;
+    const html = this.generateHTML();
     
     const printWindow = window.open('', '_blank');
     if (printWindow) {
@@ -471,10 +537,10 @@ export class InspectionPDFGenerator {
       const pdfFilename = filename || `inspection-report-${this.data.car?.id || 'unknown'}`;
       printWindow.document.title = pdfFilename;
       
-      // Wait for images to load then trigger print (user can save as PDF)
+      // Wait longer for images to load then trigger print
       setTimeout(() => {
         printWindow.print();
-      }, 500);
+      }, 1500);
     }
   }
 
@@ -484,18 +550,20 @@ export class InspectionPDFGenerator {
   async print(): Promise<void> {
     // Convert images to base64 first
     const dataWithBase64 = await this.convertImagesToBase64();
-    const generator = new InspectionPDFGenerator(dataWithBase64, this.options);
-    const html = generator.generateHTML();
+    
+    // Update this instance's data with converted images
+    this.data = dataWithBase64;
+    const html = this.generateHTML();
     
     const printWindow = window.open('', '_blank');
     if (printWindow) {
       printWindow.document.write(html);
       printWindow.document.close();
       
-      // Wait for images to load
+      // Wait longer for images to load
       setTimeout(() => {
         printWindow.print();
-      }, 500);
+      }, 1500);
     }
   }
 }

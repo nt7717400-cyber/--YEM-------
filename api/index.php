@@ -32,6 +32,16 @@ if (preg_match('#^(/api)?/uploads/(images|videos|banners)/(.+)$#', $uri, $matche
     $filename = $matches[3];
     $filePath = __DIR__ . '/uploads/' . $type . '/' . $filename;
     
+    // Handle CORS preflight for static files
+    if ($method === 'OPTIONS') {
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, OPTIONS');
+        header('Access-Control-Allow-Headers: *');
+        header('Access-Control-Max-Age: 86400');
+        http_response_code(200);
+        exit;
+    }
+    
     if (file_exists($filePath)) {
         $mimeTypes = [
             'jpg' => 'image/jpeg',
@@ -48,6 +58,11 @@ if (preg_match('#^(/api)?/uploads/(images|videos|banners)/(.+)$#', $uri, $matche
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         $mimeType = $mimeTypes[$ext] ?? 'application/octet-stream';
         $fileSize = filesize($filePath);
+        
+        // CORS headers for all static files (images, videos, banners)
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, OPTIONS');
+        header('Access-Control-Allow-Headers: *');
         
         // Handle video files with Range Requests support
         if ($type === 'videos') {
