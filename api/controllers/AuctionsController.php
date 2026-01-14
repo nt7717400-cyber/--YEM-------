@@ -335,28 +335,31 @@ class AuctionsController {
             $updates = [];
             $params = [];
 
-            // Allowed fields for update
-            if (isset($data['endTime'])) {
+            // Allowed fields for update - support both camelCase and snake_case
+            $endTime = $data['endTime'] ?? $data['end_time'] ?? null;
+            if ($endTime !== null) {
                 // Validate end time is in future
-                if (strtotime($data['endTime']) <= time()) {
+                if (strtotime($endTime) <= time()) {
                     Response::error('وقت الانتهاء يجب أن يكون في المستقبل', 400, 'VAL_001');
                 }
                 $updates[] = "end_time = ?";
-                $params[] = $data['endTime'];
+                $params[] = $endTime;
             }
 
-            if (isset($data['status'])) {
+            $status = $data['status'] ?? null;
+            if ($status !== null) {
                 $validStatuses = ['ACTIVE', 'ENDED', 'CANCELLED', 'SOLD'];
-                if (!in_array(strtoupper($data['status']), $validStatuses)) {
+                if (!in_array(strtoupper($status), $validStatuses)) {
                     Response::error('حالة المزاد غير صالحة', 400, 'VAL_001');
                 }
                 $updates[] = "status = ?";
-                $params[] = strtoupper($data['status']);
+                $params[] = strtoupper($status);
             }
 
-            if (isset($data['minIncrement'])) {
+            $minIncrement = $data['minIncrement'] ?? $data['min_increment'] ?? null;
+            if ($minIncrement !== null) {
                 $updates[] = "min_increment = ?";
-                $params[] = (float)$data['minIncrement'];
+                $params[] = (float)$minIncrement;
             }
 
             if (empty($updates)) {
