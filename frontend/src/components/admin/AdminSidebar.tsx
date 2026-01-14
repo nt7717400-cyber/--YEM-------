@@ -238,9 +238,19 @@ function SidebarContent({
         isCollapsed ? 'justify-center' : 'justify-between'
       )}>
         {!isCollapsed && (
-          <div>
-            <h1 className="text-lg font-bold">معرض وحدة اليمن</h1>
-            <p className="text-xs text-muted-foreground">لوحة التحكم</p>
+          <div className="flex items-center gap-2">
+            <img 
+              src="/logo.png" 
+              alt="شعار معرض وحدة اليمن للسيارات"
+              className="h-8 w-8 object-contain"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+            <div>
+              <h1 className="text-base font-bold">معرض وحدة اليمن للسيارات</h1>
+              <p className="text-xs text-muted-foreground">لوحة التحكم</p>
+            </div>
           </div>
         )}
         

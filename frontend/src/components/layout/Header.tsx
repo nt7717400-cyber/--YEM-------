@@ -118,23 +118,39 @@ export function Header({
           <Link 
             href="/" 
             className="flex items-center gap-2 transition-transform hover:scale-105"
-            aria-label="الصفحة الرئيسية - معرض وحدة اليمن"
+            aria-label="الصفحة الرئيسية - معرض وحدة اليمن للسيارات"
           >
+            {/* Logo Image */}
+            <img 
+              src="/logo.png" 
+              alt="شعار معرض وحدة اليمن للسيارات"
+              className={cn(
+                'object-contain transition-all duration-300',
+                isScrolled ? 'h-8 w-8' : 'h-10 w-10'
+              )}
+              onError={(e) => {
+                // Fallback to text if image fails
+                e.currentTarget.style.display = 'none';
+                const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                if (fallback) fallback.style.display = 'flex';
+              }}
+            />
+            {/* Fallback Logo */}
             <div 
               className={cn(
-                'flex items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold transition-all duration-300',
+                'hidden items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold transition-all duration-300',
                 isScrolled ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-lg'
               )}
             >
-              و
+              وحدة
             </div>
             <span 
               className={cn(
-                'hidden font-bold sm:inline-block transition-all duration-300',
-                isScrolled ? 'text-base' : 'text-lg'
+                'hidden font-bold sm:inline-block transition-all duration-300 text-primary',
+                isScrolled ? 'text-sm' : 'text-base'
               )}
             >
-              معرض وحدة اليمن
+              معرض وحدة اليمن للسيارات
             </span>
           </Link>
 

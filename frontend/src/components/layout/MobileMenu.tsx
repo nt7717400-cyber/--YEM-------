@@ -146,10 +146,20 @@ export function MobileMenu({
         {/* Header with close button */}
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold h-10 w-10 text-lg">
-              و
+            <img 
+              src="/logo.png" 
+              alt="شعار معرض وحدة اليمن للسيارات"
+              className="h-10 w-10 object-contain"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                if (fallback) fallback.style.display = 'flex';
+              }}
+            />
+            <div className="hidden items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold h-10 w-10 text-sm">
+              وحدة
             </div>
-            <span className="font-bold text-lg">معرض وحدة اليمن</span>
+            <span className="font-bold text-base">معرض وحدة اليمن للسيارات</span>
           </div>
           
           <Button
@@ -206,7 +216,7 @@ export function MobileMenu({
 
         {/* Footer */}
         <div className="p-4 border-t text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} معرض وحدة اليمن</p>
+          <p>© {new Date().getFullYear()} معرض وحدة اليمن للسيارات</p>
         </div>
       </div>
     </>

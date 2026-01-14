@@ -28,14 +28,14 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "SHAS Motors - معرض شاص موتورز",
-    template: "%s | SHAS Motors",
+    default: "معرض وحدة اليمن للسيارات",
+    template: "%s | معرض وحدة اليمن للسيارات",
   },
-  description: "SHAS Motors - معرض شاص موتورز للسيارات. أفضل السيارات الجديدة والمستعملة في اليمن. تشكيلة واسعة من السيارات بأسعار منافسة وجودة عالية.",
-  keywords: ["سيارات", "معرض سيارات", "اليمن", "سيارات للبيع", "سيارات مستعملة", "سيارات جديدة", "SHAS Motors", "شاص موتورز", "شراء سيارة"],
-  authors: [{ name: "SHAS Motors" }],
-  creator: "SHAS Motors",
-  publisher: "SHAS Motors",
+  description: "معرض وحدة اليمن للسيارات - أفضل السيارات الجديدة والمستعملة في اليمن. تشكيلة واسعة من السيارات بأسعار منافسة وجودة عالية.",
+  keywords: ["سيارات", "معرض سيارات", "اليمن", "سيارات للبيع", "سيارات مستعملة", "سيارات جديدة", "معرض وحدة اليمن", "وحدة اليمن للسيارات", "شراء سيارة"],
+  authors: [{ name: "معرض وحدة اليمن للسيارات" }],
+  creator: "معرض وحدة اليمن للسيارات",
+  publisher: "معرض وحدة اليمن للسيارات",
   icons: {
     icon: '/favicon.png',
     apple: '/logo.png',
@@ -54,14 +54,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ar_YE',
-    siteName: 'SHAS Motors',
-    title: 'SHAS Motors - معرض شاص موتورز',
+    siteName: 'معرض وحدة اليمن للسيارات',
+    title: 'معرض وحدة اليمن للسيارات',
     description: 'أفضل السيارات الجديدة والمستعملة في اليمن',
     images: ['/logo.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SHAS Motors - معرض شاص موتورز',
+    title: 'معرض وحدة اليمن للسيارات',
     description: 'أفضل السيارات الجديدة والمستعملة في اليمن',
     images: ['/logo.png'],
   },
