@@ -277,27 +277,20 @@ export default function DashboardPage() {
       const data = await api.getDashboardStats();
       setStats(data);
 
-      // Generate mock chart data (last 7 days)
-      const mockChartData: ViewsChartData[] = [];
+      // No mock chart data - will show zeros until real data is collected
+      const emptyChartData: ViewsChartData[] = [];
       for (let i = 6; i >= 0; i--) {
         const date = new Date();
         date.setDate(date.getDate() - i);
-        mockChartData.push({
+        emptyChartData.push({
           date: date.toISOString().split('T')[0],
-          views: Math.floor(Math.random() * 100) + 20,
+          views: 0,
         });
       }
-      setChartData(mockChartData);
+      setChartData(emptyChartData);
 
-      // Generate mock activities
-      const mockActivities: RecentActivity[] = [
-        { id: '1', type: 'car_added', message: 'تمت إضافة سيارة جديدة: تويوتا كامري 2024', timestamp: new Date(Date.now() - 30 * 60000).toISOString() },
-        { id: '2', type: 'car_sold', message: 'تم بيع: هوندا أكورد 2023', timestamp: new Date(Date.now() - 2 * 3600000).toISOString() },
-        { id: '3', type: 'inquiry', message: 'استفسار جديد عن: نيسان التيما 2024', timestamp: new Date(Date.now() - 5 * 3600000).toISOString() },
-        { id: '4', type: 'view', message: '50 مشاهدة جديدة اليوم', timestamp: new Date(Date.now() - 8 * 3600000).toISOString() },
-        { id: '5', type: 'car_added', message: 'تمت إضافة سيارة جديدة: مرسيدس E-Class 2024', timestamp: new Date(Date.now() - 24 * 3600000).toISOString() },
-      ];
-      setActivities(mockActivities);
+      // No mock activities - will be empty until real data is added
+      setActivities([]);
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
       setError('حدث خطأ في تحميل البيانات');
