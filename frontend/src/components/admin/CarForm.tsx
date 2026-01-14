@@ -326,53 +326,56 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
       {error && (
-        <div className="bg-red-50 text-red-600 p-4 rounded-lg">
+        <div className="bg-red-50 text-red-600 p-3 sm:p-4 rounded-lg text-sm">
           {error}
         </div>
       )}
 
       {/* Basic Info */}
       <Card>
-        <CardHeader>
-          <CardTitle>المعلومات الأساسية</CardTitle>
+        <CardHeader className="pb-2 sm:pb-4">
+          <CardTitle className="text-base sm:text-lg">المعلومات الأساسية</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">اسم السيارة *</label>
+        <CardContent className="space-y-3 sm:space-y-4 px-3 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="space-y-1.5 sm:space-y-2">
+              <label className="text-xs sm:text-sm font-medium">اسم السيارة *</label>
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="مثال: تويوتا كامري 2024"
                 required
+                className="h-10 sm:h-9 text-sm"
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">الماركة *</label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <label className="text-xs sm:text-sm font-medium">الماركة *</label>
               <Input
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
                 placeholder="مثال: تويوتا"
                 required
+                className="h-10 sm:h-9 text-sm"
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">الموديل *</label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <label className="text-xs sm:text-sm font-medium">الموديل *</label>
               <Input
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
                 placeholder="مثال: كامري"
                 required
+                className="h-10 sm:h-9 text-sm"
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">سنة الصنع *</label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <label className="text-xs sm:text-sm font-medium">سنة الصنع *</label>
               <select
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
-                className="w-full h-9 rounded-md border border-input bg-transparent px-3 py-1"
+                className="w-full h-10 sm:h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm"
                 required
               >
                 <option value="">-- اختر السنة --</option>
@@ -381,8 +384,8 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
                 ))}
               </select>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">السعر (ر.ي) *</label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <label className="text-xs sm:text-sm font-medium">السعر (ر.ي) *</label>
               <Input
                 type="number"
                 value={price}
@@ -391,12 +394,13 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
                 min="0"
                 required={priceType === 'FIXED'}
                 disabled={priceType === 'AUCTION'}
+                className="h-10 sm:h-9 text-sm"
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">نوع التسعير *</label>
-              <div className="flex gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
+            <div className="space-y-1.5 sm:space-y-2">
+              <label className="text-xs sm:text-sm font-medium">نوع التسعير *</label>
+              <div className="flex gap-4 h-10 sm:h-9 items-center">
+                <label className="flex items-center gap-2 cursor-pointer text-sm">
                   <input
                     type="radio"
                     name="priceType"
@@ -406,7 +410,7 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
                   />
                   <span>سعر ثابت</span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-2 cursor-pointer text-sm">
                   <input
                     type="radio"
                     name="priceType"
@@ -418,23 +422,23 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
                 </label>
               </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">حالة السيارة *</label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <label className="text-xs sm:text-sm font-medium">حالة السيارة *</label>
               <select
                 value={condition}
                 onChange={(e) => setCondition(e.target.value as 'NEW' | 'USED')}
-                className="w-full h-9 rounded-md border border-input bg-transparent px-3 py-1"
+                className="w-full h-10 sm:h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm"
               >
                 <option value="NEW">جديدة</option>
                 <option value="USED">مستعملة</option>
               </select>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">وارد السيارة</label>
+            <div className="space-y-1.5 sm:space-y-2">
+              <label className="text-xs sm:text-sm font-medium">وارد السيارة</label>
               <select
                 value={origin}
                 onChange={(e) => setOrigin(e.target.value)}
-                className="w-full h-9 rounded-md border border-input bg-transparent px-3 py-1"
+                className="w-full h-10 sm:h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm"
               >
                 <option value="">-- اختر الوارد --</option>
                 <option value="خليجي">وارد خليجي</option>
@@ -447,36 +451,37 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
               </select>
             </div>
             {condition === 'USED' && (
-              <div className="space-y-2">
-                <label className="text-sm font-medium">الكيلومترات</label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <label className="text-xs sm:text-sm font-medium">الكيلومترات</label>
                 <Input
                   type="number"
                   value={kilometers}
                   onChange={(e) => setKilometers(e.target.value)}
                   placeholder="مثال: 50000"
                   min="0"
+                  className="h-10 sm:h-9 text-sm"
                 />
               </div>
             )}
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">الوصف</label>
+          <div className="space-y-1.5 sm:space-y-2">
+            <label className="text-xs sm:text-sm font-medium">الوصف</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="وصف تفصيلي للسيارة..."
-              className="w-full min-h-[100px] rounded-md border border-input bg-transparent px-3 py-2"
+              className="w-full min-h-[80px] sm:min-h-[100px] rounded-md border border-input bg-transparent px-3 py-2 text-sm"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">المواصفات</label>
+          <div className="space-y-1.5 sm:space-y-2">
+            <label className="text-xs sm:text-sm font-medium">المواصفات</label>
             <textarea
               value={specifications}
               onChange={(e) => setSpecifications(e.target.value)}
               placeholder="المواصفات الفنية..."
-              className="w-full min-h-[100px] rounded-md border border-input bg-transparent px-3 py-2"
+              className="w-full min-h-[80px] sm:min-h-[100px] rounded-md border border-input bg-transparent px-3 py-2 text-sm"
             />
           </div>
 
@@ -486,9 +491,9 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
               id="isFeatured"
               checked={isFeatured}
               onChange={(e) => setIsFeatured(e.target.checked)}
-              className="rounded"
+              className="rounded w-4 h-4"
             />
-            <label htmlFor="isFeatured" className="text-sm">
+            <label htmlFor="isFeatured" className="text-xs sm:text-sm">
               سيارة مميزة (تظهر في الصفحة الرئيسية)
             </label>
           </div>
@@ -498,13 +503,13 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
       {/* Auction Fields - Only when price type is AUCTION */}
       {priceType === 'AUCTION' && (
         <Card>
-          <CardHeader>
-            <CardTitle>إعدادات المزاد</CardTitle>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">إعدادات المزاد</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">السعر الابتدائي (ر.ي) *</label>
+          <CardContent className="space-y-3 sm:space-y-4 px-3 sm:px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="space-y-1.5 sm:space-y-2">
+                <label className="text-xs sm:text-sm font-medium">السعر الابتدائي (ر.ي) *</label>
                 <Input
                   type="number"
                   value={startingPrice}
@@ -512,42 +517,46 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
                   placeholder="مثال: 1000000"
                   min="0"
                   required
+                  className="h-10 sm:h-9 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">السعر الأدنى (اختياري)</label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <label className="text-xs sm:text-sm font-medium">السعر الأدنى (اختياري)</label>
                 <Input
                   type="number"
                   value={reservePrice}
                   onChange={(e) => setReservePrice(e.target.value)}
                   placeholder="السعر الأدنى المقبول"
                   min="0"
+                  className="h-10 sm:h-9 text-sm"
                 />
-                <p className="text-xs text-gray-500">
+                <p className="text-[10px] sm:text-xs text-gray-500">
                   إذا لم يصل المزاد لهذا السعر، لن يتم البيع
                 </p>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">الحد الأدنى للزيادة (ر.ي)</label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <label className="text-xs sm:text-sm font-medium">الحد الأدنى للزيادة (ر.ي)</label>
                 <Input
                   type="number"
                   value={minIncrement}
                   onChange={(e) => setMinIncrement(e.target.value)}
                   placeholder="100"
                   min="1"
+                  className="h-10 sm:h-9 text-sm"
                 />
-                <p className="text-xs text-gray-500">
+                <p className="text-[10px] sm:text-xs text-gray-500">
                   أقل مبلغ يمكن زيادته على السعر الحالي
                 </p>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">وقت انتهاء المزاد *</label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <label className="text-xs sm:text-sm font-medium">وقت انتهاء المزاد *</label>
                 <Input
                   type="datetime-local"
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
                   min={new Date().toISOString().slice(0, 16)}
                   required
+                  className="h-10 sm:h-9 text-sm"
                 />
               </div>
             </div>
@@ -557,13 +566,13 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
 
       {/* Images */}
       <Card>
-        <CardHeader>
-          <CardTitle>الصور</CardTitle>
+        <CardHeader className="pb-2 sm:pb-4">
+          <CardTitle className="text-base sm:text-lg">الصور</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 sm:space-y-4 px-3 sm:px-6">
           {/* Existing Images */}
           {images.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
               {images.map((image, index) => (
                 <div key={image.id} className="relative group">
                   <Image
@@ -571,18 +580,18 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
                     alt={`صورة ${index + 1}`}
                     width={200}
                     height={128}
-                    className="w-full h-32 object-cover rounded-lg"
+                    className="w-full h-24 sm:h-32 object-cover rounded-lg"
                     unoptimized
                   />
                   {index === 0 && (
-                    <span className="absolute top-2 right-2 bg-primary text-white text-xs px-2 py-1 rounded">
+                    <span className="absolute top-1 right-1 sm:top-2 sm:right-2 bg-primary text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
                       الرئيسية
                     </span>
                   )}
                   <button
                     type="button"
                     onClick={() => removeExistingImage(image.id)}
-                    className="absolute top-2 left-2 bg-red-500 text-white rounded-full w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-red-500 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 text-xs sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center"
                   >
                     ×
                   </button>
@@ -593,7 +602,7 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
 
           {/* New Images Preview */}
           {newImages.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
               {newImages.map((file, index) => (
                 <div key={index} className="relative group">
                   <Image
@@ -601,16 +610,16 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
                     alt={`صورة جديدة ${index + 1}`}
                     width={200}
                     height={128}
-                    className="w-full h-32 object-cover rounded-lg border-2 border-dashed border-primary"
+                    className="w-full h-24 sm:h-32 object-cover rounded-lg border-2 border-dashed border-primary"
                     unoptimized
                   />
-                  <span className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
+                  <span className="absolute top-1 right-1 sm:top-2 sm:right-2 bg-green-500 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
                     جديدة
                   </span>
                   <button
                     type="button"
                     onClick={() => removeNewImage(index)}
-                    className="absolute top-2 left-2 bg-red-500 text-white rounded-full w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-red-500 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 text-xs sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center"
                   >
                     ×
                   </button>
@@ -624,7 +633,7 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+            className={`border-2 border-dashed rounded-lg p-4 sm:p-8 text-center transition-colors ${
               isDragging ? 'border-primary bg-primary/5' : 'border-gray-300'
             }`}
           >
@@ -637,12 +646,12 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
               id="image-upload"
             />
             <label htmlFor="image-upload" className="cursor-pointer">
-              <div className="text-4xl mb-2">📷</div>
-              <p className="text-gray-600">
+              <div className="text-3xl sm:text-4xl mb-2">📷</div>
+              <p className="text-sm sm:text-base text-gray-600">
                 اسحب الصور هنا أو{' '}
                 <span className="text-primary underline">اختر من جهازك</span>
               </p>
-              <p className="text-sm text-gray-400 mt-1">
+              <p className="text-xs sm:text-sm text-gray-400 mt-1">
                 يمكنك رفع عدة صور (الصورة الأولى ستكون الرئيسية)
               </p>
             </label>
@@ -652,35 +661,38 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
 
       {/* Video */}
       <Card>
-        <CardHeader>
-          <CardTitle>الفيديو</CardTitle>
+        <CardHeader className="pb-2 sm:pb-4">
+          <CardTitle className="text-base sm:text-lg">الفيديو</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex gap-4">
-            <label className="flex items-center gap-2">
+        <CardContent className="space-y-3 sm:space-y-4 px-3 sm:px-6">
+          <div className="flex flex-wrap gap-3 sm:gap-4">
+            <label className="flex items-center gap-2 text-sm">
               <input
                 type="radio"
                 name="videoType"
                 checked={videoType === 'NONE'}
                 onChange={() => setVideoType('NONE')}
+                className="w-4 h-4"
               />
               <span>بدون فيديو</span>
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-sm">
               <input
                 type="radio"
                 name="videoType"
                 checked={videoType === 'YOUTUBE'}
                 onChange={() => setVideoType('YOUTUBE')}
+                className="w-4 h-4"
               />
               <span>رابط يوتيوب</span>
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-sm">
               <input
                 type="radio"
                 name="videoType"
                 checked={videoType === 'UPLOAD'}
                 onChange={() => setVideoType('UPLOAD')}
+                className="w-4 h-4"
               />
               <span>رفع فيديو</span>
             </label>
@@ -691,6 +703,7 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
               value={youtubeUrl}
               onChange={(e) => setYoutubeUrl(e.target.value)}
               placeholder="https://www.youtube.com/watch?v=..."
+              className="h-10 sm:h-9 text-sm"
             />
           )}
 
@@ -703,7 +716,7 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-primary/90"
               />
               {videoFile && (
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-xs sm:text-sm text-gray-500 mt-2">
                   الملف المحدد: {videoFile.name}
                 </p>
               )}
@@ -715,24 +728,21 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
       {/* Inspection Section - Only for USED cars */}
       {condition === 'USED' && (
         <div data-testid="inspection-section-wrapper">
-          <Card>
-            <CardHeader>
-              <CardTitle>فحص السيارة المستعملة</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <InspectionSection
-                value={inspectionData}
-                onChange={setInspectionData}
-                disabled={isLoading}
-              />
-            </CardContent>
-          </Card>
+          <InspectionSection
+            value={inspectionData}
+            onChange={setInspectionData}
+            disabled={isLoading}
+          />
         </div>
       )}
 
       {/* Actions */}
-      <div className="flex gap-4">
-        <Button type="submit" disabled={isLoading || uploadingImages}>
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sticky bottom-0 bg-background py-3 sm:py-4 border-t -mx-4 px-4 sm:mx-0 sm:px-0 sm:border-0 sm:static">
+        <Button 
+          type="submit" 
+          disabled={isLoading || uploadingImages}
+          className="h-11 sm:h-10 text-sm order-1 sm:order-none"
+        >
           {isLoading ? 'جاري الحفظ...' : uploadingImages ? 'جاري رفع الصور...' : isEdit ? 'تحديث السيارة' : 'إضافة السيارة'}
         </Button>
         <Button
@@ -740,6 +750,7 @@ export function CarForm({ car, isEdit = false }: CarFormProps) {
           variant="outline"
           onClick={() => router.push('/admin/cars')}
           disabled={isLoading}
+          className="h-11 sm:h-10 text-sm order-2 sm:order-none"
         >
           إلغاء
         </Button>
