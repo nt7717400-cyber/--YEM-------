@@ -481,7 +481,7 @@ class ApiClient {
 
   async getBannerById(id: number): Promise<Banner | null> {
     try {
-      const response = await this.request<ApiResponse<Banner>>(`/banners/${id}`);
+      const response = await this.request<ApiResponse<Banner>>(`/banners/${id}`, {}, true);
       return response.data ?? null;
     } catch {
       return null;
