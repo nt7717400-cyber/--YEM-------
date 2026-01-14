@@ -190,9 +190,14 @@ $productUrl
 
   /// Sliver app bar with image gallery
   Widget _buildSliverAppBar(Car car, bool isDark) {
+    // Get status bar height to ensure image starts below it
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    final totalHeight = 350 + statusBarHeight;
+    
     return SliverAppBar(
-      expandedHeight: 350,
+      expandedHeight: totalHeight,
       pinned: true,
+      stretch: true,
       backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
       foregroundColor: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
       actions: [
@@ -204,12 +209,16 @@ $productUrl
         ),
       ],
       flexibleSpace: FlexibleSpaceBar(
-        background: ImageGallery(
-          images: car.images,
-          thumbnailUrl: car.thumbnail,
-          height: 350,
-          showIndicator: true,
-          enableZoom: true,
+        collapseMode: CollapseMode.pin,
+        background: Padding(
+          padding: EdgeInsets.only(top: statusBarHeight + kToolbarHeight),
+          child: ImageGallery(
+            images: car.images,
+            thumbnailUrl: car.thumbnail,
+            height: 350,
+            showIndicator: true,
+            enableZoom: true,
+          ),
         ),
       ),
     );

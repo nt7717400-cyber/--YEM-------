@@ -106,10 +106,14 @@ class _AuctionDetailsScreenState extends ConsumerState<AuctionDetailsScreen> {
   /// Sliver app bar with image gallery
   Widget _buildSliverAppBar(Auction auction, bool isDark) {
     final car = auction.car;
+    // Get status bar height to ensure image starts below it
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    final totalHeight = 300 + statusBarHeight;
     
     return SliverAppBar(
-      expandedHeight: 300,
+      expandedHeight: totalHeight,
       pinned: true,
+      stretch: true,
       backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
       foregroundColor: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
       actions: [
@@ -121,15 +125,19 @@ class _AuctionDetailsScreenState extends ConsumerState<AuctionDetailsScreen> {
         ),
       ],
       flexibleSpace: FlexibleSpaceBar(
-        background: car != null && car.images.isNotEmpty
-            ? ImageGallery(
-                images: car.images,
-                thumbnailUrl: car.thumbnail,
-                height: 300,
-                showIndicator: true,
-                enableZoom: true,
-              )
-            : _buildPlaceholderImage(isDark),
+        collapseMode: CollapseMode.pin,
+        background: Padding(
+          padding: EdgeInsets.only(top: statusBarHeight + kToolbarHeight),
+          child: car != null && car.images.isNotEmpty
+              ? ImageGallery(
+                  images: car.images,
+                  thumbnailUrl: car.thumbnail,
+                  height: 300,
+                  showIndicator: true,
+                  enableZoom: true,
+                )
+              : _buildPlaceholderImage(isDark),
+        ),
       ),
     );
   }
