@@ -78,44 +78,102 @@ export function SVGInspectionViewer({
     return processed;
   }, [svgContent, partsStatus]);
 
-  // Handle click on SVG container (works for both mouse and touch)
-  const handleSvgClick = React.useCallback((e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+  // Handle touch start - capture the touched element immediately
+  const touchedElementRef = React.useRef<Element | null>(null);
+  
+  const handleTouchStart = React.useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     if (readOnly) return;
     
-    // Get the target element
-    let clientX: number, clientY: number;
-    if ('touches' in e) {
-      // Touch event
-      if (e.touches.length === 0) return;
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-    } else {
-      // Mouse event
-      clientX = e.clientX;
-      clientY = e.clientY;
+    // Store the touched element for use in touchend
+    const touch = e.touches[0];
+    if (touch) {
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+      touchedElementRef.current = element;
     }
-    
-    const target = e.target as Element;
+  }, [readOnly]);
+
+  // Find body-part element from target
+  const findBodyPart = React.useCallback((target: Element, container: Element): PartKey | null => {
     let element: Element | null = target;
-    const container = e.currentTarget;
     
-    // Walk up the DOM to find a body-part element
     while (element && element !== container) {
       if (element.classList?.contains('body-part')) {
         const partId = element.getAttribute('id') as PartKey;
         if (partId && PART_LABELS[partId]) {
-          console.log('[SVGViewer] Clicked part:', partId);
-          e.preventDefault();
-          e.stopPropagation();
-          if (onPartClick) {
-            onPartClick(partId);
-          }
-          return;
+          return partId;
         }
       }
       element = element.parentElement;
     }
-  }, [readOnly, onPartClick]);
+    return null;
+  }, []);
+
+  // Handle click on SVG container (works for mouse)
+  const handleSvgClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (readOnly) return;
+    
+    const partId = findBodyPart(e.target as Element, e.currentTarget);
+    if (partId) {
+      console.log('[SVGViewer] Mouse clicked part:', partId);
+      e.preventDefault();
+      e.stopPropagation();
+      if (onPartClick) {
+        onPartClick(partId);
+      }
+    }
+  }, [readOnly, onPartClick, findBodyPart]);
+
+  // Handle touch end - use the stored element from touchstart
+  const handleTouchEnd = React.useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    if (readOnly) return;
+    
+    // Use changedTouches for touchend (touches array is empty at touchend)
+    const touch = e.changedTouches[0];
+    if (!touch) {
+      touchedElementRef.current = null;
+      return;
+    }
+    
+    // Get element at touch point, or use stored element from touchstart
+    const elementAtPoint = document.elementFromPoint(touch.clientX, touch.clientY);
+    const element = elementAtPoint || touchedElementRef.current;
+    
+    if (element) {
+      const partId = findBodyPart(element, e.currentTarget);
+      if (partId) {
+        console.log('[SVGViewer] Touch clicked part:', partId);
+        e.preventDefault();
+        e.stopPropagation();
+        if (onPartClick) {
+          onPartClick(partId);
+        }
+      }
+    }
+    
+    // Clear the ref
+    touchedElementRef.current = null;
+  }, [readOnly, onPartClick, findBodyPart]);
+
+  // Handle pointer events (unified touch/mouse handling)
+  const handlePointerUp = React.useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (readOnly) return;
+    
+    // Only handle touch pointers (mouse is handled by onClick)
+    if (e.pointerType !== 'touch') return;
+    
+    const element = document.elementFromPoint(e.clientX, e.clientY);
+    if (element) {
+      const partId = findBodyPart(element, e.currentTarget);
+      if (partId) {
+        console.log('[SVGViewer] Pointer clicked part:', partId);
+        e.preventDefault();
+        e.stopPropagation();
+        if (onPartClick) {
+          onPartClick(partId);
+        }
+      }
+    }
+  }, [readOnly, onPartClick, findBodyPart]);
 
   // Handle mouse move for hover detection
   const handleMouseMove = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -193,10 +251,12 @@ export function SVGInspectionViewer({
       <div
         className="w-full h-full svg-inspection-viewer touch-manipulation"
         onClick={handleSvgClick}
-        onTouchEnd={handleSvgClick}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onPointerUp={handlePointerUp}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        style={{ cursor: readOnly ? 'default' : 'pointer' }}
+        style={{ cursor: readOnly ? 'default' : 'pointer', touchAction: 'manipulation' }}
         dangerouslySetInnerHTML={{ __html: processedSvg || '' }}
       />
 
@@ -209,22 +269,34 @@ export function SVGInspectionViewer({
 
       {/* Styles for SVG interaction */}
       <style jsx global>{`
+        .svg-inspection-viewer {
+          -webkit-user-select: none;
+          user-select: none;
+          -webkit-touch-callout: none;
+        }
         .svg-inspection-viewer svg {
           width: 100%;
           height: 100%;
           max-height: 100%;
+          pointer-events: auto;
         }
         .svg-inspection-viewer .body-part {
           transition: all 0.2s ease;
           cursor: pointer;
           -webkit-tap-highlight-color: transparent;
+          pointer-events: auto !important;
+          touch-action: manipulation;
         }
         .svg-inspection-viewer .body-part:hover {
           stroke: #1f2937;
           stroke-width: 2.5;
           filter: brightness(1.1);
         }
-        @media (hover: none) {
+        /* Touch device styles */
+        @media (hover: none) and (pointer: coarse) {
+          .svg-inspection-viewer .body-part {
+            stroke-width: 2;
+          }
           .svg-inspection-viewer .body-part:active {
             stroke: #1f2937;
             stroke-width: 3;

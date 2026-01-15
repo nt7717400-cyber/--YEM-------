@@ -1413,3 +1413,53 @@
     overflow-y: auto;
   }
 }
+
+
+/* ============================================
+   Mobile Touch Optimization for SVG Inspection
+   ============================================ */
+@layer components {
+  /* SVG inspection viewer touch optimization */
+  .svg-inspection-viewer {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+  }
+  
+  .svg-inspection-viewer svg {
+    pointer-events: auto;
+    touch-action: manipulation;
+  }
+  
+  .svg-inspection-viewer .body-part {
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+  }
+  
+  /* Ensure SVG elements are tappable on mobile */
+  @media (hover: none) and (pointer: coarse) {
+    .svg-inspection-viewer .body-part {
+      stroke-width: 2;
+    }
+    
+    .svg-inspection-viewer .body-part:active {
+      stroke: #1f2937;
+      stroke-width: 3;
+      filter: brightness(1.15);
+    }
+  }
+  
+  /* Mobile inspection form improvements */
+  @media (max-width: 639px) {
+    .inspection-section {
+      touch-action: manipulation;
+    }
+    
+    .inspection-section .svg-inspection-viewer {
+      min-height: 280px;
+    }
+  }
+}
