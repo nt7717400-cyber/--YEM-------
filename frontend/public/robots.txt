@@ -1,9 +1,18 @@
-# Robots.txt for معرض وحدة اليمن للسيارات
+# Allow all bots to crawl the site
 User-agent: *
 Allow: /
 
-# Disallow admin pages
+# Disallow admin and private areas
 Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
 
 # Sitemap location
-Sitemap: https://example.com/sitemap.xml
+Sitemap: https://fazaacaetg.com/sitemap.xml
+
+# Crawl delay (optional - be nice to servers)
+Crawl-delay: 1
+
+# Request rate (optional)
+Request-rate: 1/1s
