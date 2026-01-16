@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hatchback Front View - VDS Template -->
+  
+  <rect x="0" y="0" width="400" height="300" fill="#f8fafc"/>
+  
+  <!-- Front Bumper -->
+  <path id="front_bumper" 
+        d="M 70,215 L 330,215 L 340,255 L 60,255 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الصدام الأمامي" data-label-en="Front Bumper"/>
+  
+  <!-- Hood - shorter than sedan -->
+  <path id="hood" 
+        d="M 90,130 L 310,130 L 330,215 L 70,215 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الكبوت" data-label-en="Hood"/>
+  
+  <!-- Front Grille -->
+  <path id="front_grille" 
+        d="M 150,225 L 250,225 L 255,250 L 145,250 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الشبك الأمامي" data-label-en="Front Grille"/>
+  
+  <!-- Headlight Left -->
+  <path id="headlight_left" 
+        d="M 80,175 L 140,170 L 145,215 L 75,215 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المصباح الأمامي الأيسر" data-label-en="Left Headlight"/>
+  
+  <!-- Headlight Right -->
+  <path id="headlight_right" 
+        d="M 260,170 L 320,175 L 325,215 L 255,215 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المصباح الأمامي الأيمن" data-label-en="Right Headlight"/>
+  
+  <!-- Front Windshield - more upright -->
+  <path id="front_windshield" 
+        d="M 110,55 L 290,55 L 310,130 L 90,130 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الزجاج الأمامي" data-label-en="Front Windshield"/>
+  
+  <!-- Left Front Fender -->
+  <path id="left_front_fender" 
+        d="M 55,145 L 90,130 L 70,215 L 55,215 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الرفرف الأمامي الأيسر" data-label-en="Left Front Fender"/>
+  
+  <!-- Right Front Fender -->
+  <path id="right_front_fender" 
+        d="M 310,130 L 345,145 L 345,215 L 330,215 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الرفرف الأمامي الأيمن" data-label-en="Right Front Fender"/>
+  
+  <!-- Left Mirror -->
+  <path id="left_mirror" 
+        d="M 50,95 L 65,90 L 70,110 L 55,115 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المرآة اليسرى" data-label-en="Left Mirror"/>
+  
+  <!-- Right Mirror -->
+  <path id="right_mirror" 
+        d="M 335,90 L 350,95 L 345,115 L 330,110 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المرآة اليمنى" data-label-en="Right Mirror"/>
+  
+  <!-- Roof -->
+  <path id="roof" 
+        d="M 120,35 L 280,35 L 290,55 L 110,55 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="السقف" data-label-en="Roof"/>
+  
+  <!-- Front Left Wheel -->
+  <ellipse id="wheel_front_left" 
+           cx="100" cy="265" rx="35" ry="20" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الأمامية اليسرى" data-label-en="Front Left Wheel"/>
+  
+  <!-- Front Right Wheel -->
+  <ellipse id="wheel_front_right" 
+           cx="300" cy="265" rx="35" ry="20" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الأمامية اليمنى" data-label-en="Front Right Wheel"/>
+  
+  <style>
+    .body-part { cursor: pointer; transition: all 0.2s ease; }
+    .body-part:hover { stroke: #1f2937; stroke-width: 2.5; filter: brightness(1.1); }
+  </style>
+</svg>

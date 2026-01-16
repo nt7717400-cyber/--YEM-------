@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Truck Rear View - VDS Template -->
+  <rect x="0" y="0" width="400" height="300" fill="#f8fafc"/>
+  <!-- Rear Bumper -->
+  <path id="rear_bumper" d="M 30,230 L 370,230 L 380,270 L 20,270 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الصدام الخلفي" data-label-en="Rear Bumper"/>
+  <!-- Cargo Bed/Tailgate -->
+  <path id="trunk" d="M 40,80 L 360,80 L 370,230 L 30,230 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="صندوق الحمولة" data-label-en="Cargo Bed"/>
+  <!-- Taillight Left -->
+  <path id="taillight_left" d="M 35,100 L 70,100 L 70,180 L 35,180 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المصباح الخلفي الأيسر" data-label-en="Left Taillight"/>
+  <!-- Taillight Right -->
+  <path id="taillight_right" d="M 330,100 L 365,100 L 365,180 L 330,180 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المصباح الخلفي الأيمن" data-label-en="Right Taillight"/>
+  <!-- Left Rear Quarter -->
+  <path id="left_rear_quarter" d="M 20,80 L 40,80 L 30,230 L 20,230 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الربع الخلفي الأيسر" data-label-en="Left Rear Quarter"/>
+  <!-- Right Rear Quarter -->
+  <path id="right_rear_quarter" d="M 360,80 L 380,80 L 380,230 L 370,230 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الربع الخلفي الأيمن" data-label-en="Right Rear Quarter"/>
+  <!-- Rear Left Wheel -->
+  <ellipse id="wheel_rear_left" cx="75" cy="280" rx="40" ry="18" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الخلفية اليسرى" data-label-en="Rear Left Wheel"/>
+  <!-- Rear Right Wheel -->
+  <ellipse id="wheel_rear_right" cx="325" cy="280" rx="40" ry="18" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الخلفية اليمنى" data-label-en="Rear Right Wheel"/>
+  <style>
+    .body-part { cursor: pointer; transition: all 0.2s ease; }
+    .body-part:hover { stroke: #1f2937; stroke-width: 2.5; filter: brightness(1.1); }
+  </style>
+</svg>

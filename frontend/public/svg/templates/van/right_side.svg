@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 550 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Van Right Side View - VDS Template (Mirrored) -->
+  
+  <rect x="0" y="0" width="550" height="280" fill="#f8fafc"/>
+  
+  <!-- Rear Bumper -->
+  <path id="rear_bumper" 
+        d="M 15,175 L 50,170 L 50,210 L 15,215 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الصدام الخلفي" data-label-en="Rear Bumper"/>
+  
+  <!-- Right Rear Quarter -->
+  <path id="right_rear_quarter" 
+        d="M 50,50 L 200,50 L 200,210 L 50,210 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الربع الخلفي الأيمن" data-label-en="Right Rear Quarter"/>
+  
+  <!-- Right Sliding Door -->
+  <path id="right_rear_door" 
+        d="M 200,50 L 370,50 L 370,210 L 200,210 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الباب الجانبي الأيمن" data-label-en="Right Sliding Door"/>
+  
+  <!-- Right Rear Window -->
+  <path id="right_rear_window" 
+        d="M 205,55 L 365,55 L 365,95 L 205,95 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="النافذة الخلفية اليمنى" data-label-en="Right Rear Window"/>
+  
+  <!-- Roof -->
+  <path id="roof" 
+        d="M 50,30 L 420,40 L 420,45 L 50,45 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="السقف" data-label-en="Roof"/>
+  
+  <!-- Right Front Door -->
+  <path id="right_front_door" 
+        d="M 370,100 L 460,100 L 460,210 L 370,210 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الباب الأمامي الأيمن" data-label-en="Right Front Door"/>
+  
+  <!-- Right Front Window -->
+  <path id="right_front_window" 
+        d="M 420,40 L 455,45 L 455,95 L 420,95 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="النافذة الأمامية اليمنى" data-label-en="Right Front Window"/>
+  
+  <!-- Front Windshield -->
+  <path id="front_windshield" 
+        d="M 420,40 L 460,100 L 460,100 L 420,100 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الزجاج الأمامي" data-label-en="Front Windshield"/>
+  
+  <!-- Right Front Fender -->
+  <path id="right_front_fender" 
+        d="M 460,160 L 500,160 L 495,210 L 460,210 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الرفرف الأمامي الأيمن" data-label-en="Right Front Fender"/>
+  
+  <!-- Hood -->
+  <path id="hood" 
+        d="M 460,100 L 500,120 L 500,160 L 460,160 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الكبوت" data-label-en="Hood"/>
+  
+  <!-- Front Bumper -->
+  <path id="front_bumper" 
+        d="M 495,160 L 535,170 L 535,215 L 495,210 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الصدام الأمامي" data-label-en="Front Bumper"/>
+  
+  <!-- Right Mirror -->
+  <path id="right_mirror" 
+        d="M 445,95 L 465,100 L 465,125 L 445,120 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المرآة اليمنى" data-label-en="Right Mirror"/>
+  
+  <!-- Taillight Right -->
+  <path id="taillight_right" 
+        d="M 20,105 L 45,100 L 45,165 L 20,170 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المصباح الخلفي الأيمن" data-label-en="Right Taillight"/>
+  
+  <!-- Headlight Right -->
+  <path id="headlight_right" 
+        d="M 495,145 L 525,150 L 525,170 L 495,165 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المصباح الأمامي الأيمن" data-label-en="Right Headlight"/>
+  
+  <!-- Rear Right Wheel -->
+  <ellipse id="wheel_rear_right" 
+           cx="110" cy="235" rx="42" ry="38" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الخلفية اليمنى" data-label-en="Rear Right Wheel"/>
+  
+  <!-- Front Right Wheel -->
+  <ellipse id="wheel_front_right" 
+           cx="470" cy="235" rx="42" ry="38" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الأمامية اليمنى" data-label-en="Front Right Wheel"/>
+  
+  <style>
+    .body-part { cursor: pointer; transition: all 0.2s ease; }
+    .body-part:hover { stroke: #1f2937; stroke-width: 2.5; filter: brightness(1.1); }
+  </style>
+</svg>

@@ -8,7 +8,7 @@
 export type ViewAngle = 'front' | 'rear' | 'left_side' | 'right_side' | 'top';
 
 // Car Templates - قوالب السيارات
-export type CarTemplate = 'sedan' | 'suv' | 'hatchback' | 'coupe' | 'pickup' | 'van';
+export type CarTemplate = 'sedan' | 'suv' | 'hatchback' | 'coupe' | 'pickup' | 'van' | 'crossover' | 'minivan' | 'truck';
 
 // Part Condition - حالة الجزء (VDS specific)
 export type PartCondition = 'good' | 'scratch' | 'bodywork' | 'broken' | 'painted' | 'replaced' | 'not_inspected';

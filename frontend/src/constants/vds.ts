@@ -104,6 +104,9 @@ export const CAR_TEMPLATE_LABELS: Record<CarTemplate, { ar: string; en: string }
   coupe: { ar: 'كوبيه', en: 'Coupe' },
   pickup: { ar: 'بيك أب', en: 'Pickup' },
   van: { ar: 'فان', en: 'Van' },
+  crossover: { ar: 'كروس أوفر', en: 'Crossover' },
+  minivan: { ar: 'ميني فان', en: 'Minivan' },
+  truck: { ar: 'شاحنة', en: 'Truck' },
 };
 
 // Part Labels - تسميات الأجزاء
@@ -152,7 +155,7 @@ export const PART_LABELS: Record<PartKey, PartLabel> = {
 export const ALL_VIEW_ANGLES: ViewAngle[] = ['front', 'rear', 'left_side', 'right_side'];
 
 // All Car Templates - جميع قوالب السيارات
-export const ALL_CAR_TEMPLATES: CarTemplate[] = ['sedan', 'suv', 'hatchback', 'coupe', 'pickup', 'van'];
+export const ALL_CAR_TEMPLATES: CarTemplate[] = ['sedan', 'suv', 'hatchback', 'coupe', 'pickup', 'van', 'crossover', 'minivan', 'truck'];
 
 // All Part Conditions - جميع حالات الأجزاء
 export const ALL_PART_CONDITIONS: PartCondition[] = [
@@ -254,11 +257,8 @@ export function getPartLabel(partKey: PartKey, language: 'ar' | 'en' = 'ar'): st
  * Get SVG path for a template and view angle
  */
 export function getSVGPath(template: CarTemplate, angle: ViewAngle): string {
-  // Map template to available SVG folders
-  const templateFolder = template === 'hatchback' || template === 'coupe' || template === 'van' 
-    ? 'sedan' // Fallback to sedan for templates without SVG
-    : template;
-  return `/svg/templates/${templateFolder}/${angle}.svg`;
+  // All templates now have their own SVG files
+  return `/svg/templates/${template}/${angle}.svg`;
 }
 
 /**

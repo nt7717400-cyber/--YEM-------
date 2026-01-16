@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Crossover Right Side View - VDS Template -->
+  
+  <rect x="0" y="0" width="500" height="300" fill="#f8fafc"/>
+  
+  <!-- Right Rear Quarter Panel -->
+  <path id="right_rear_quarter" 
+        d="M 380,100 L 450,110 L 450,200 L 380,200 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الربع الخلفي الأيمن" data-label-en="Right Rear Quarter"/>
+  
+  <!-- Right Rear Door -->
+  <path id="right_rear_door" 
+        d="M 260,85 L 380,100 L 380,200 L 260,200 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الباب الخلفي الأيمن" data-label-en="Right Rear Door"/>
+  
+  <!-- Right Front Door -->
+  <path id="right_front_door" 
+        d="M 140,85 L 260,85 L 260,200 L 140,200 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الباب الأمامي الأيمن" data-label-en="Right Front Door"/>
+  
+  <!-- Right Front Fender -->
+  <path id="right_front_fender" 
+        d="M 50,110 L 140,85 L 140,200 L 50,200 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الرفرف الأمامي الأيمن" data-label-en="Right Front Fender"/>
+  
+  <!-- Hood -->
+  <path id="hood" 
+        d="M 30,130 L 50,110 L 140,85 L 140,100 L 30,130 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الكبوت" data-label-en="Hood"/>
+  
+  <!-- Trunk/Tailgate -->
+  <path id="trunk" 
+        d="M 450,110 L 470,130 L 470,200 L 450,200 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="باب الصندوق" data-label-en="Tailgate"/>
+  
+  <!-- Roof -->
+  <path id="roof" 
+        d="M 120,50 L 400,50 L 420,85 L 100,85 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="السقف" data-label-en="Roof"/>
+  
+  <!-- Right Front Window -->
+  <path id="right_front_window" 
+        d="M 145,90 L 255,90 L 255,130 L 145,130 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="النافذة الأمامية اليمنى" data-label-en="Right Front Window"/>
+  
+  <!-- Right Rear Window -->
+  <path id="right_rear_window" 
+        d="M 265,90 L 375,105 L 375,130 L 265,130 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="النافذة الخلفية اليمنى" data-label-en="Right Rear Window"/>
+  
+  <!-- Right Mirror -->
+  <path id="right_mirror" 
+        d="M 130,95 L 145,90 L 145,115 L 130,120 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="المرآة اليمنى" data-label-en="Right Mirror"/>
+  
+  <!-- Front Bumper -->
+  <path id="front_bumper" 
+        d="M 20,200 L 30,130 L 50,200 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الصدام الأمامي" data-label-en="Front Bumper"/>
+  
+  <!-- Rear Bumper -->
+  <path id="rear_bumper" 
+        d="M 450,200 L 470,130 L 480,200 Z" 
+        fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+        data-label-ar="الصدام الخلفي" data-label-en="Rear Bumper"/>
+  
+  <!-- Front Right Wheel -->
+  <ellipse id="wheel_front_right" 
+           cx="100" cy="220" rx="45" ry="45" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الأمامية اليمنى" data-label-en="Front Right Wheel"/>
+  
+  <!-- Rear Right Wheel -->
+  <ellipse id="wheel_rear_right" 
+           cx="400" cy="220" rx="45" ry="45" 
+           fill="#9ca3af" stroke="#6b7280" stroke-width="1.5" class="body-part"
+           data-label-ar="العجلة الخلفية اليمنى" data-label-en="Rear Right Wheel"/>
+  
+  <style>
+    .body-part { cursor: pointer; transition: all 0.2s ease; }
+    .body-part:hover { stroke: #1f2937; stroke-width: 2.5; filter: brightness(1.1); }
+  </style>
+</svg>
