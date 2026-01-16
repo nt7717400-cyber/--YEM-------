@@ -88,13 +88,18 @@ flutter_native_splash:
 flutter:
   uses-material-design: true
 
-  # Assets
+  # Assets - تحسين: إضافة جميع قوالب SVG
   assets:
     - assets/images/
-    - assets/fonts/
     - assets/svg/templates/sedan/
     - assets/svg/templates/suv/
     - assets/svg/templates/pickup/
+    - assets/svg/templates/hatchback/
+    - assets/svg/templates/coupe/
+    - assets/svg/templates/van/
+    - assets/svg/templates/crossover/
+    - assets/svg/templates/minivan/
+    - assets/svg/templates/truck/
 
-  # Note: Cairo font is loaded via google_fonts package
-  # No need to bundle font files locally
+  # ملاحظة: خط Cairo يتم تحميله عبر google_fonts
+  # لا حاجة لتضمين ملفات الخطوط محلياً
