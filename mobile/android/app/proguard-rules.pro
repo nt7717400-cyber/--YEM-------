@@ -6,6 +6,10 @@
 -keep class io.flutter.plugins.** { *; }
 -keep class io.flutter.embedding.** { *; }
 
+# Keep Google Play Core (required for Flutter)
+-dontwarn com.google.android.play.core.**
+-keep class com.google.android.play.core.** { *; }
+
 # Keep Riverpod
 -keep class * extends riverpod.** { *; }
 
