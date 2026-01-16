@@ -1,7 +1,7 @@
 <?php
 /**
  * Static File Handler
- * Handles serving static files (images, videos, banners)
+ * Handles serving static files (images, videos, banners, damage photos)
  */
 
 function handleStaticFile(string $type, string $filename, string $method): void {

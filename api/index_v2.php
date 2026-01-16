@@ -28,7 +28,7 @@ $uri = $_SERVER['REQUEST_URI'];
 $uri = parse_url($uri, PHP_URL_PATH);
 
 // ==================== Static Files Handler ====================
-if (preg_match('#^(/api)?/uploads/(images|videos|banners)/(.+)$#', $uri, $matches)) {
+if (preg_match('#^(/api)?/uploads/(images|videos|banners|damage)/(.+)$#', $uri, $matches)) {
     require_once __DIR__ . '/handlers/StaticFileHandler.php';
     handleStaticFile($matches[2], $matches[3], $method);
     exit;

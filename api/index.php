@@ -30,7 +30,7 @@ $uri = $_SERVER['REQUEST_URI'];
 $uri = parse_url($uri, PHP_URL_PATH);
 
 // Serve static files from uploads directory
-if (preg_match('#^(/api)?/uploads/(images|videos|banners)/(.+)$#', $uri, $matches)) {
+if (preg_match('#^(/api)?/uploads/(images|videos|banners|damage)/(.+)$#', $uri, $matches)) {
     $type = $matches[2];
     $filename = $matches[3];
     $filePath = __DIR__ . '/uploads/' . $type . '/' . $filename;

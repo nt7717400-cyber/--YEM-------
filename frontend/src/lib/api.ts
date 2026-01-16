@@ -41,10 +41,17 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 export function getImageUrl(path: string | null | undefined): string {
   if (!path) return '/placeholder-car.svg';
   if (path.startsWith('http')) return path;
+  if (path.startsWith('data:')) return path; // Base64 images
   if (path.startsWith('/uploads')) {
     // Remove /api suffix from API_BASE_URL for uploads
     const baseUrl = API_BASE_URL.replace(/\/api$/, '');
     return `${baseUrl}${path}`;
+  }
+  // Handle relative paths that might be damage photos or other uploads
+  if (path.includes('uploads/') || path.includes('damage/')) {
+    const baseUrl = API_BASE_URL.replace(/\/api$/, '');
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+    return `${baseUrl}${cleanPath}`;
   }
   return path;
 }
