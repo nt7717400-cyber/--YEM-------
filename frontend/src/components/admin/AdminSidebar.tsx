@@ -301,9 +301,15 @@ function SidebarContent({
       {/* Footer */}
       <div className={cn('p-4 border-t', isCollapsed && 'p-2')}>
         {!isCollapsed && (
-          <div className="text-sm text-muted-foreground mb-3 text-center truncate">
-            مرحباً، {user?.username}
-          </div>
+          <>
+            <div className="text-sm text-muted-foreground mb-3 text-center truncate">
+              مرحباً، {user?.username}
+            </div>
+            <div className="text-xs text-muted-foreground/70 mb-3 text-center border-t pt-3">
+              <p>تطوير: أبو كنان الجرف</p>
+              <p className="mt-1">صنع في اليمن 💛</p>
+            </div>
+          </>
         )}
         <Button
           variant="outline"

@@ -217,6 +217,9 @@ export function MobileMenu({
         {/* Footer */}
         <div className="p-4 border-t text-center text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} معرض وحدة اليمن للسيارات</p>
+          <p className="mt-2 text-xs">
+            تطوير: أبو كنان الجرف | صنع في اليمن 💛
+          </p>
         </div>
       </div>
     </>

@@ -103,6 +103,9 @@ class _AboutContent extends ConsumerWidget {
             ],
             // Contact buttons
             _buildContactButtons(),
+            const SizedBox(height: AppSpacing.sectionGap),
+            // Developer info section
+            _buildDeveloperSection(isDark),
             const SizedBox(height: AppSpacing.xxxl),
           ],
         ),
@@ -419,6 +422,98 @@ class _AboutContent extends ConsumerWidget {
 
   Future<void> _openMaps() async {
     await UrlLauncherUtils.launchMapsFromSettings(settings);
+  }
+
+  Widget _buildDeveloperSection(bool isDark) {
+    return _InfoCard(
+      isDark: isDark,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SectionTitle(
+            icon: Icons.code_rounded,
+            title: 'المطوّر',
+            isDark: isDark,
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          // Developer name with Yemen flag
+          Center(
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.primary.withValues(alpha: 0.1),
+                        AppColors.accent.withValues(alpha: 0.1),
+                      ],
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.person_rounded,
+                    size: 40,
+                    color: AppColors.primary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  'أبو كنان الجرف',
+                  style: AppTypography.titleLarge.copyWith(
+                    color: isDark
+                        ? AppColors.textPrimaryDark
+                        : AppColors.textPrimaryLight,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primarySurface,
+                    borderRadius: AppSpacing.borderRadiusFull,
+                  ),
+                  child: Text(
+                    'صنع في اليمن 💛',
+                    style: AppTypography.labelMedium.copyWith(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          Divider(
+            color: isDark ? AppColors.dividerDark : AppColors.dividerLight,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          // Email
+          _ContactRow(
+            icon: Icons.email_rounded,
+            iconColor: AppColors.error,
+            label: 'البريد الإلكتروني',
+            value: 'nt.7717400@gmail.com',
+            onTap: () => UrlLauncherUtils.launchEmail('nt.7717400@gmail.com'),
+            isDark: isDark,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          // Phone
+          _ContactRow(
+            icon: Icons.phone_rounded,
+            iconColor: AppColors.success,
+            label: 'رقم الهاتف',
+            value: '778091791',
+            onTap: () => UrlLauncherUtils.launchPhoneCall('778091791'),
+            isDark: isDark,
+          ),
+        ],
+      ),
+    );
   }
 }
 

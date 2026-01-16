@@ -110,6 +110,18 @@ class UrlLauncherUtils {
     return _launchUrl(url);
   }
 
+  /// Launch email
+  static Future<bool> launchEmail(String email, {String? subject, String? body}) async {
+    String url = 'mailto:$email';
+    if (subject != null || body != null) {
+      final params = <String>[];
+      if (subject != null) params.add('subject=${Uri.encodeComponent(subject)}');
+      if (body != null) params.add('body=${Uri.encodeComponent(body)}');
+      url += '?${params.join('&')}';
+    }
+    return _launchUrl(url);
+  }
+
   /// Launch maps with coordinates
   static Future<bool> launchMaps({
     required double latitude,

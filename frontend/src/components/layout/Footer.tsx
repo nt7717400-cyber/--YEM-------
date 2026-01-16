@@ -96,6 +96,27 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {settings?.name || 'معرض وحدة اليمن للسيارات'}. جميع الحقوق محفوظة.
           </p>
+          <div className="mt-4 pt-4 border-t border-dashed">
+            <p className="text-xs">
+              تطوير: <span className="font-semibold">أبو كنان الجرف</span> | صنع في اليمن 💛
+            </p>
+            <div className="flex items-center justify-center gap-4 mt-2">
+              <a
+                href="mailto:nt.7717400@gmail.com"
+                className="hover:text-primary transition-colors"
+              >
+                nt.7717400@gmail.com
+              </a>
+              <span>|</span>
+              <a
+                href="tel:+967778091791"
+                className="hover:text-primary transition-colors"
+                dir="ltr"
+              >
+                778091791
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
