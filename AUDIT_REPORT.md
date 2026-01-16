@@ -464,9 +464,9 @@ try {
 - [x] Unified filter building - `api/controllers/CarsController.php` (buildWhereClause)
 
 ### Architecture
-- [ ] Service layer implemented
+- [x] Service layer implemented - `api/services/CarService.php`, `api/services/AuthService.php`
 - [x] Transaction handling added - `api/controllers/CarsController.php`
-- [ ] API versioning in place
+- [x] API versioning in place - `api/routes/Router.php` (supports /api/v1/...)
 - [x] Audit logging active - `api/utils/AuditLogger.php`
 - [x] Unified query building - `api/controllers/CarsController.php`
 

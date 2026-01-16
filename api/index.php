@@ -6,6 +6,9 @@
  * Security: Enhanced with rate limiting, security headers, and CORS
  */
 
+// Set timezone to Yemen (UTC+3)
+date_default_timezone_set('Asia/Aden');
+
 // Error reporting (disable in production)
 $isProduction = getenv('APP_ENV') === 'production';
 error_reporting($isProduction ? 0 : E_ALL);

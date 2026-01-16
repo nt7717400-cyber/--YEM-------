@@ -528,6 +528,11 @@ class AuctionsController {
      * Format auction for response
      */
     private function formatAuction(array $auction): array {
+        // Convert timestamps to Yemen timezone (UTC+3)
+        $endTime = $this->convertToYemenTimezone($auction['end_time']);
+        $createdAt = $this->convertToYemenTimezone($auction['created_at']);
+        $updatedAt = $this->convertToYemenTimezone($auction['updated_at']);
+        
         return [
             'id' => (int)$auction['id'],
             'carId' => (int)$auction['car_id'],
@@ -540,13 +545,30 @@ class AuctionsController {
             'reservePrice' => $auction['reserve_price'] ? (float)$auction['reserve_price'] : null,
             'currentPrice' => (float)$auction['current_price'],
             'minIncrement' => (float)$auction['min_increment'],
-            'endTime' => $auction['end_time'],
+            'endTime' => $endTime,
             'status' => $auction['status'],
             'bidCount' => (int)($auction['bid_count'] ?? 0),
             'thumbnail' => $auction['thumbnail'] ?? null,
-            'createdAt' => $auction['created_at'],
-            'updatedAt' => $auction['updated_at']
+            'createdAt' => $createdAt,
+            'updatedAt' => $updatedAt
         ];
+    }
+    
+    /**
+     * Convert timestamp to Yemen timezone (UTC+3)
+     */
+    private function convertToYemenTimezone(?string $timestamp): ?string {
+        if (!$timestamp) {
+            return null;
+        }
+        
+        try {
+            $dt = new DateTime($timestamp, new DateTimeZone('UTC'));
+            $dt->setTimezone(new DateTimeZone('Asia/Aden'));
+            return $dt->format('Y-m-d H:i:s');
+        } catch (Exception $e) {
+            return $timestamp;
+        }
     }
 
     /**
@@ -663,7 +685,7 @@ class AuctionsController {
             'maskedPhone' => PhoneMasking::mask($bid['phone_number']),
             'phoneNumber' => $this->isAdmin ? $bid['phone_number'] : null,
             'amount' => (float)$bid['amount'],
-            'createdAt' => $bid['created_at']
+            'createdAt' => $this->convertToYemenTimezone($bid['created_at'])
         ];
     }
 }
